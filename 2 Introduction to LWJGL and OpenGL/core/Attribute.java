@@ -6,16 +6,16 @@ public class Attribute
 {
     // type of elements in data array:
     // int | float | vec2 | vec3 | vec4
-    String dataType;
+    private String dataType;
 
     // *flattened* array of data to be stored in buffer
-    float[] dataArray;
+    public float[] dataArray;
 
     // store results of generating buffers
-    int[] resultArray = new int[1];
+    private int[] resultArray = new int[1];
 
     // reference of available buffer from GPU
-    int bufferRef;
+    private int bufferRef;
 
     public Attribute(String dataType, float[] dataArray)
     {

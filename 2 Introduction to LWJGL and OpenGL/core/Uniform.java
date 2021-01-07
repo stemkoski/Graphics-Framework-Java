@@ -7,16 +7,16 @@ public class Uniform
 {
 	// type of data:
     // int | bool | float | vec2 | vec3 | vec4
-    String dataType;
+    private String dataType;
 
     // data to be sent to uniform variable
-	float[] data;
+	public float[] data;
 
 	// store results of generating buffers
-    int[] resultArray = new int[1];
+    private int[] resultArray = new int[1];
 
 	// reference for variable location in program
-	int variableRef;
+	private int variableRef;
 
 	public Uniform(String dataType, float[] data)
 	{
