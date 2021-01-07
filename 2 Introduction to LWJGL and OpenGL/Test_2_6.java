@@ -18,12 +18,6 @@ public class Test_2_6 extends Base
         String fragCode = OpenGLUtils.readFileAsString("Test_2_6.frag");
         programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
 
-        // render settings (optional)
-
-        // set line width
-        glPointSize(10);
-        glLineWidth(4);
-
         // setup vertex array object
         vaoRef = glGenVertexArrays();
         glBindVertexArray(vaoRef);
