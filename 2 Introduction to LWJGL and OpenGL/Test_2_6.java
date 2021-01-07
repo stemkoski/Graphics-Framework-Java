@@ -3,8 +3,6 @@ import static org.lwjgl.opengl.GL40.*;
 
 import core.*;
 
-// GLFW = Graphics Library FrameWork
-
 public class Test_2_6 extends Base
 {
     public int programRef, vaoRef, vertexCount;
