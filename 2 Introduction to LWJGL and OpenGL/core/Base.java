@@ -20,6 +20,14 @@ public abstract class Base
     // handle user input events
     public Input input;
 
+    // number of seconds application has been running
+    public float time;
+    // seconds since last iteration of run loop
+    public float deltaTime;
+    // store timestamp from last iteration of run loop
+    private long previousTime;
+    private long currentTime;
+
     // constructor
     public Base()
     {
@@ -46,6 +54,12 @@ public abstract class Base
 
         running = true;
         input = new Input(window);
+
+        time = 0;
+        deltaTime = 1/60f;
+        currentTime = System.currentTimeMillis();
+        previousTime = System.currentTimeMillis();
+
 
         // make the OpenGL context current: all function calls will apply to this context instance
         glfwMakeContextCurrent(window);
@@ -79,8 +93,15 @@ public abstract class Base
         while (running)
         {
             // process input ----------------------
-            // poll for window events; activates callbacks in input methods
+            // poll for window events; activates callbacks in Input class methods
             glfwPollEvents();
+
+            // recalculate time variables
+            currentTime = System.currentTimeMillis();
+            deltaTime = (currentTime - previousTime) / 1000f;
+            time += deltaTime;
+            previousTime = currentTime;
+            
             // process input
             input.update();
             // press Escape key or click on close icon to quit application,
