@@ -10,45 +10,20 @@ public class Test_2_2 extends Base
     public int programRef;
 
     public void initialize()
-    {
-        // vertex shader code
-        String vsCode = String.join("\n",
-            "in vec3 position;",
-            "void main()",
-            "{",
-            "    gl_Position = vec4(position.x, position.y, position.z, 1.0);",
-            "}"
-        );
+    {       
+        // load code, send to GPU, and compile; store program reference
+        String vertCode = OpenGLUtils.readFileAsString("Test_2_2.vert");
+        String fragCode = OpenGLUtils.readFileAsString("Test_2_2.frag");
+        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
 
-        // fragment shader code
-        String fsCode = String.join("\n",
-            "void main()",
-            "{",
-            "    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);",
-            "}"
-        );
-
-        // send code to GPU and compile; store program reference
-        programRef = OpenGLUtils.initializeProgram(vsCode, fsCode);
-
-        // render settings (optional)
-
-        // set line width
-        glLineWidth(4);
-
+        // set up vertex array object
         int vaoRef = glGenVertexArrays();
         glBindVertexArray(vaoRef);
 
-        float[] positionData = {
-                 0.8f,  0.0f, 0.0f,
-                 0.4f,  0.6f, 0.0f,
-                -0.4f,  0.6f, 0.0f,
-                -0.8f,  0.0f, 0.0f,
-                -0.4f, -0.6f, 0.0f,
-                 0.4f, -0.6f, 0.0f  };
-        Attribute positionAttribute = new Attribute( "vec3", positionData );
-        positionAttribute.associateVariable( programRef, "position" );
+        // render settings (optional)
 
+        // set point width and height
+        glPointSize(10);
     }
 
     public void update()
@@ -57,8 +32,7 @@ public class Test_2_2 extends Base
         glUseProgram( programRef );
 
         // render geometric objects using selected program
-        glDrawArrays(GL_LINE_LOOP, 0, 6);
-
+        glDrawArrays(GL_POINTS, 0, 1);
     }
 
     // driver method
@@ -66,5 +40,4 @@ public class Test_2_2 extends Base
     {
         new Test_2_2().run();
     }
-
 }

@@ -15,6 +15,7 @@ IF %errorlevel%==0 (
   pause
   exit
 )
+
 echo Running main() from class: %2 
 echo -----------------------------------------------
 %JAVA_HOME%\bin\java -classpath .;./build/;./lib/* %2

@@ -23,12 +23,12 @@ public class Attribute
         this.dataArray = dataArray;
         // returns a single buffer reference
         bufferRef = glGenBuffers();
-        // store data immediately
-        storeData();
+        // upload data immediately
+        uploadData();
     }
 
     // store this data in a GPU buffer
-    public void storeData()
+    public void uploadData()
     {
         // select buffer used by the following functions
         glBindBuffer(GL_ARRAY_BUFFER, bufferRef);

@@ -1,16 +1,32 @@
 package core;
 
 import static org.lwjgl.opengl.GL40.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class OpenGLUtils
 {
+    public static String readFileAsString(String fileName) 
+    {
+        String text = ""; 
+        try 
+        { 
+            text = new String(Files.readAllBytes(Paths.get(fileName))); 
+        } 
+        catch (Exception ex) 
+        { 
+            ex.printStackTrace(); 
+        } 
+        return text; 
+    }
+
     // for storing debug codes
     static int[] status = new int[1];
 
     public static int initializeShader(String shaderCode, int shaderType)
     {
-        // specify specific OpenGL version and requirements
-        String extension = "#extension GL_ARB_shading_language_420pack : require \n";
-        shaderCode = "#version 130 \n" + extension + shaderCode;
+        // specify specific OpenGL version
+        shaderCode = "#version 330 \n" + shaderCode;
 
         // create empty shader object and return reference value
         int shaderRef = glCreateShader(shaderType);
