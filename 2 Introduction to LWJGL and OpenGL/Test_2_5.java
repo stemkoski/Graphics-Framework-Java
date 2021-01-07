@@ -22,7 +22,7 @@ public class Test_2_5 extends Base
         glPointSize(10);
         glLineWidth(4);
 
-        // setup vertex array object: triangle
+        // setup vertex array object
         vaoRef = glGenVertexArrays();
         glBindVertexArray(vaoRef);
 
