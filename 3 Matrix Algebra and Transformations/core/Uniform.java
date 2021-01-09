@@ -3,14 +3,16 @@ package core;
 import static org.lwjgl.opengl.GL40.*;
 import java.util.Arrays;
 
-public class Uniform
+public class Uniform<T>
 {
-	// type of data:
-    // int | bool | float | vec2 | vec3 | vec4
+	// GLSL types
+    // int | bool | float | vec2 | vec3 | vec4 | mat4
+    // Java types
+    // Integer | Float | Vector | Matrix
     private String dataType;
 
     // data to be sent to uniform variable
-	public float[] data;
+	public T data;
 
 	// store results of generating buffers
     private int[] resultArray = new int[1];
@@ -18,7 +20,7 @@ public class Uniform
 	// reference for variable location in program
 	private int variableRef;
 
-	public Uniform(String dataType, float[] data)
+	public Uniform(String dataType, T data)
 	{
 		this.dataType = dataType;
         this.data = data;
@@ -27,27 +29,42 @@ public class Uniform
 	// get and store reference for program variable with given name
 	public void locateVariable(int programRef, String variableName)
 	{
-		this.variableRef = glGetUniformLocation(programRef, variableName);
+		variableRef = glGetUniformLocation(programRef, variableName);
 	}
 
 	// store data in uniform variable previously located
 	public void uploadData()
 	{
 		// if the program does not reference the variable, then exit
-		if (this.variableRef == -1)
+		if (variableRef == -1)
 			return;
 
-		if (this.dataType.equals("int"))
-			glUniform1i(this.variableRef, (int)this.data[0]);
-		else if (this.dataType.equals("bool"))
-			glUniform1i(this.variableRef, (int)this.data[0]);
-		else if (this.dataType.equals("float"))
-			glUniform1f(this.variableRef, this.data[0]);
-		else if (this.dataType.equals("vec2"))
-			glUniform2f(this.variableRef, this.data[0], this.data[1]);
-		else if (this.dataType.equals("vec3"))
-			glUniform3f(this.variableRef, this.data[0], this.data[1], this.data[2]);
-		else if (this.dataType.equals("vec4"))
-			glUniform4f(this.variableRef, this.data[0], this.data[1], this.data[2], this.data[3]);
+		if (dataType.equals("int"))
+			glUniform1i(variableRef, (Integer)data);
+		else if (dataType.equals("bool"))
+			glUniform1i(variableRef, (Integer)data);
+		else if (dataType.equals("float"))
+			glUniform1f(variableRef, (Float)data);
+		else if (dataType.equals("vec2"))
+		{
+			Vector v = (Vector)data;
+			glUniform2f(variableRef, v.values[0], v.values[1]);
+		}
+		else if (dataType.equals("vec3"))
+		{
+			Vector v = (Vector)data;
+			glUniform3f(variableRef, v.values[0], v.values[1], v.values[2]);
+		}
+		else if (dataType.equals("vec4"))
+		{
+			Vector v = (Vector)data;
+			glUniform4f(variableRef, v.values[0], v.values[1], v.values[2], v.values[3]);
+		}
+		else if (dataType.equals("mat4"))
+		{
+			Matrix m = (Matrix)data;
+			glUniformMatrix4fv(variableRef, true, m.flatten());
+		}
+
 	}
 }

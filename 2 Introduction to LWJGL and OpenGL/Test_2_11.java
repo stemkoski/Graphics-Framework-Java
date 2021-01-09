@@ -6,7 +6,7 @@ import core.*;
 public class Test_2_11 extends Base
 {
     public int programRef, vaoRef, vertexCount;
-    public Uniform translation, baseColor;
+    public Uniform<Vector> translation, baseColor;
     public float speed = 0.5f;
 
     public void initialize()
@@ -32,9 +32,9 @@ public class Test_2_11 extends Base
         positionAttribute.associateVariable( programRef, "position" );
 
         // set up uniforms
-        translation = new Uniform("vec3", new float[] {-0.5f, 0.0f, 0.0f} );
+        translation = new Uniform<Vector>("vec3", new Vector(-0.5f, 0.0f, 0.0f) );
         translation.locateVariable( programRef, "translation" );
-        baseColor = new Uniform("vec3", new float[] {1.0f, 0.0f, 0.0f} );
+        baseColor = new Uniform<Vector>("vec3", new Vector(1.0f, 0.0f, 0.0f) );
         baseColor.locateVariable( programRef, "baseColor" );
 
     }
@@ -46,13 +46,13 @@ public class Test_2_11 extends Base
 
         float distance = speed * deltaTime;
         if (input.isKeyPressed(GLFW_KEY_LEFT))
-            translation.data[0] -= distance;
+            translation.data.values[0] -= distance;
         if (input.isKeyPressed(GLFW_KEY_RIGHT))
-            translation.data[0] += distance;
+            translation.data.values[0] += distance;
         if (input.isKeyPressed(GLFW_KEY_DOWN))
-            translation.data[1] -= distance;
+            translation.data.values[1] -= distance;
         if (input.isKeyPressed(GLFW_KEY_UP))
-            translation.data[1] += distance;
+            translation.data.values[1] += distance;
 
         // render scene
 

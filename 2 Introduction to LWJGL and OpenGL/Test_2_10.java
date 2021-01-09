@@ -11,7 +11,6 @@ public class Test_2_10 extends Base
     public void initialize()
     {
         System.out.println("Initializing...");
-
     }
 
     public void update()

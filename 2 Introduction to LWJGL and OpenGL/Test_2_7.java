@@ -6,7 +6,9 @@ import core.*;
 public class Test_2_7 extends Base
 {
     public int programRef, vaoRef, vertexCount;
-    public Uniform translation, baseColor;
+    // particularly important to declare uniform class type here
+    //   in order for update function to work
+    public Uniform<Vector> translation, baseColor;
 
     public void initialize()
     {
@@ -31,9 +33,9 @@ public class Test_2_7 extends Base
         positionAttribute.associateVariable( programRef, "position" );
 
         // set up uniforms
-        translation = new Uniform("vec3", new float[] {-0.5f, 0.0f, 0.0f} );
+        translation = new Uniform<Vector>("vec3", new Vector(-0.5f, 0.0f, 0.0f) );
         translation.locateVariable( programRef, "translation" );
-        baseColor = new Uniform("vec3", new float[] {1.0f, 0.0f, 0.0f} );
+        baseColor = new Uniform<Vector>("vec3", new Vector(1.0f, 0.0f, 0.0f) );
         baseColor.locateVariable( programRef, "baseColor" );
 
     }
@@ -43,11 +45,11 @@ public class Test_2_7 extends Base
 
         // update data
         // increase x coordinate of translation
-        translation.data[0] += 0.01f;
+        translation.data.values[0] += 0.01f;
         // if triangle passes off-screen on the right,
         // change translation so it reappears on the left
-        if (translation.data[0] > 1.2f)
-            translation.data[0] = -1.2f;
+        if (translation.data.values[0] > 1.2f)
+            translation.data.values[0] = -1.2f;
 
         // render scene
 

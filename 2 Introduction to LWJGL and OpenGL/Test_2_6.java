@@ -6,7 +6,7 @@ import core.*;
 public class Test_2_6 extends Base
 {
     public int programRef, vaoRef, vertexCount;
-    public Uniform translation1, translation2,
+    public Uniform<Vector> translation1, translation2,
                    baseColor1, baseColor2;
 
     public void initialize()
@@ -29,13 +29,13 @@ public class Test_2_6 extends Base
         positionAttribute.associateVariable( programRef, "position" );
 
         // set up uniforms
-        translation1 = new Uniform("vec3", new float[] {-0.5f, 0.0f, 0.0f} );
+        translation1 = new Uniform<Vector>("vec3", new Vector(-0.5f, 0.0f, 0.0f) );
         translation1.locateVariable( programRef, "translation" );
-        translation2 = new Uniform("vec3", new float[] {0.5f, 0.0f, 0.0f} );
+        translation2 = new Uniform<Vector>("vec3", new Vector(0.5f, 0.0f, 0.0f) );
         translation2.locateVariable( programRef, "translation" );
-        baseColor1 = new Uniform("vec3", new float[] {1.0f, 0.0f, 0.0f} );
+        baseColor1 = new Uniform<Vector>("vec3", new Vector(1.0f, 0.0f, 0.0f) );
         baseColor1.locateVariable( programRef, "baseColor" );
-        baseColor2 = new Uniform("vec3", new float[] {0.0f, 0.0f, 1.0f} );
+        baseColor2 = new Uniform<Vector>("vec3", new Vector(0.0f, 0.0f, 1.0f) );
         baseColor2.locateVariable( programRef, "baseColor" );
 
     }

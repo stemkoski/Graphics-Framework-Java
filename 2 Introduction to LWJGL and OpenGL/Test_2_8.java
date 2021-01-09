@@ -6,7 +6,7 @@ import core.*;
 public class Test_2_8 extends Base
 {
     public int programRef, vaoRef, vertexCount;
-    public Uniform translation, baseColor;
+    public Uniform<Vector> translation, baseColor;
 
     public void initialize()
     {
@@ -31,9 +31,9 @@ public class Test_2_8 extends Base
         positionAttribute.associateVariable( programRef, "position" );
 
         // set up uniforms
-        translation = new Uniform("vec3", new float[] {-0.5f, 0.0f, 0.0f} );
+        translation = new Uniform<Vector>("vec3", new Vector(-0.5f, 0.0f, 0.0f) );
         translation.locateVariable( programRef, "translation" );
-        baseColor = new Uniform("vec3", new float[] {1.0f, 0.0f, 0.0f} );
+        baseColor = new Uniform<Vector>("vec3", new Vector(1.0f, 0.0f, 0.0f) );
         baseColor.locateVariable( programRef, "baseColor" );
 
     }
@@ -43,8 +43,8 @@ public class Test_2_8 extends Base
 
         // update data
         // move in circular pattern
-        translation.data[0] = (float)(0.75 * Math.cos(time));
-        translation.data[1] = (float)(0.75 * Math.sin(time));
+        translation.data.values[0] = (float)(0.75 * Math.cos(time));
+        translation.data.values[1] = (float)(0.75 * Math.sin(time));
 
         // render scene
 
