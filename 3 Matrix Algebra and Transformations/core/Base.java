@@ -48,7 +48,7 @@ public abstract class Base
 
         // create window and associated OpenGL context (context stores framebuffer and other state information)
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-        window = glfwCreateWindow(512, 512, "Graphics Window", 0, 0);
+        window = glfwCreateWindow(1024, 1024, "Graphics Window", 0, 0);
         if ( window == 0 )
             throw new RuntimeException("Failed to create the GLFW window");
 

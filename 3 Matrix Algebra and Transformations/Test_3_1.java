@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL40.*;
 import core.*;
 
 /* will use for testing Matrix class */
-public class Test_3_0 extends Base
+public class Test_3_1 extends Base
 {
     public int programRef, vaoRef, vertexCount;
     public Uniform translation, baseColor;
@@ -12,6 +12,24 @@ public class Test_3_0 extends Base
 
     public void initialize()
     {
+        String s = String.format("%6.2f", 1.1);
+        System.out.println(s);
+
+        Matrix m = new Matrix(3,3);
+        System.out.println(m);
+        
+        Matrix n = new Matrix(2,3);
+        n.setValues(1,2,3,4,5,6);
+        System.out.println(n);
+
+        Matrix p = new Matrix(2,2);
+        p.setValues(1,2,3,4);
+        System.out.println(p);
+
+        Matrix q = Matrix.multiply(p, n);
+        System.out.println(q);
+
+
         /*
         // load code, send to GPU, and compile; store program reference
         String vertCode = OpenGLUtils.readFileAsString("Test_2_6.vert");
@@ -75,7 +93,7 @@ public class Test_3_0 extends Base
     // driver method
     public static void main(String[] args)
     {
-        new Test_3_0().run();
+        new Test_3_1().run();
     }
 
 }
