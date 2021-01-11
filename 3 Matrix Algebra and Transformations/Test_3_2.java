@@ -61,43 +61,33 @@ public class Test_3_2 extends Base
                 Matrix.makeTranslation(0, moveAmount, 0) );
 
         if (input.isKeyPressed(GLFW_KEY_S))
-        {
-            Matrix m = Matrix.makeTranslation(0, -moveAmount, 0);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeTranslation(0, -moveAmount, 0));
+
         if (input.isKeyPressed(GLFW_KEY_A))
-        {
-            Matrix m = Matrix.makeTranslation(-moveAmount, 0, 0);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeTranslation(-moveAmount, 0, 0));
+      
         if (input.isKeyPressed(GLFW_KEY_D))
-        {
-            Matrix m = Matrix.makeTranslation(moveAmount, 0, 0);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeTranslation(moveAmount, 0, 0));
 
         if (input.isKeyPressed(GLFW_KEY_Z))
-        {
-            Matrix m = Matrix.makeTranslation(0, 0, moveAmount);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeTranslation(0, 0, moveAmount));
+        
         if (input.isKeyPressed(GLFW_KEY_X))
-        {
-            Matrix m = Matrix.makeTranslation(0, 0, -moveAmount);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeTranslation(0, 0, -moveAmount));
 
         // global rotation
         if (input.isKeyPressed(GLFW_KEY_Q))
-        {
-            Matrix m = Matrix.makeRotationZ(turnAmount);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeRotationZ(turnAmount));
+
         if (input.isKeyPressed(GLFW_KEY_E))
-        {
-            Matrix m = Matrix.makeRotationZ(-turnAmount);
-            modelMatrix.data = Matrix.multiply(m, modelMatrix.data);
-        }
+            modelMatrix.data.leftMultiply( 
+                Matrix.makeRotationZ(-turnAmount));
 
         // local translation
         if (input.isKeyPressed(GLFW_KEY_I))
@@ -105,32 +95,25 @@ public class Test_3_2 extends Base
                 Matrix.makeTranslation(0, moveAmount, 0) );
 
         if (input.isKeyPressed(GLFW_KEY_K))
-        {
-            Matrix m = Matrix.makeTranslation(0, -moveAmount, 0);
-            modelMatrix.data = Matrix.multiply(modelMatrix.data, m);
-        }
+            modelMatrix.data.rightMultiply( 
+                Matrix.makeTranslation(0, -moveAmount, 0) );
+
         if (input.isKeyPressed(GLFW_KEY_J))
-        {
-            Matrix m = Matrix.makeTranslation(-moveAmount, 0, 0);
-            modelMatrix.data = Matrix.multiply(modelMatrix.data, m);
-        }
+            modelMatrix.data.rightMultiply( 
+                Matrix.makeTranslation(-moveAmount, 0, 0) );
+
         if (input.isKeyPressed(GLFW_KEY_L))
-        {
-            Matrix m = Matrix.makeTranslation(moveAmount, 0, 0);
-            modelMatrix.data = Matrix.multiply(modelMatrix.data, m);
-        }
+            modelMatrix.data.rightMultiply( 
+                Matrix.makeTranslation(moveAmount, 0, 0) );
 
         // local rotation
         if (input.isKeyPressed(GLFW_KEY_U))
-        {
-            Matrix m = Matrix.makeRotationZ(turnAmount);
-            modelMatrix.data = Matrix.multiply(modelMatrix.data, m);
-        }
+            modelMatrix.data.rightMultiply( 
+                Matrix.makeRotationZ(turnAmount) );
+
         if (input.isKeyPressed(GLFW_KEY_O))
-        {
-            Matrix m = Matrix.makeRotationZ(-turnAmount);
-            modelMatrix.data = Matrix.multiply(modelMatrix.data, m);
-        }
+            modelMatrix.data.rightMultiply( 
+                Matrix.makeRotationZ(-turnAmount) );
 
         // render scene
 

@@ -2,6 +2,9 @@ package core;
 
 public class Matrix
 {
+
+    // TODO: inverse? determinant? lookAt? setPosition/getPosition/setDirection/getDirection?
+
     private int rows, cols;
     private float[][] values;
     private float[] flatValues;
@@ -86,6 +89,95 @@ public class Matrix
         return s;
     }
 
+    // inverse related methods; require square matrix
+    public float determinant() 
+    {
+        // if (rows != cols)
+        //     throw new Exception();
+        if (rows == 1)
+            return values[0][0];
+        
+        if (rows == 2)
+            return values[0][0] * values[1][1] - values[0][1] * values[1][0];
+
+        // for larger matrices, calculate determinant 
+        //   using cofactor expansion along first row
+        float det = 0;
+        for (int colNum = 0; colNum < cols; colNum++)
+            det += (float)Math.pow(-1, colNum) * values[0][colNum] * minor(0, colNum).determinant();
+        return det;
+    }
+
+
+    // TODO: row != rowNum (!!!!)
+    /*
+        0 1 2 3 4
+        exclude 2
+
+        rowIndex
+
+        minorRowIndex
+
+
+    */
+    // generate (rows-1) by (cols-1) submatrix, excluding given row and col.
+    public Matrix minor(int excludeRowNum, int excludeColNum)
+    {
+        Matrix m = new Matrix(this.rows-1, this.cols-1);
+
+        int minorRowNum = 0, minorColNum = 0;
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+        {
+            if (rowNum == excludeRowNum)
+                continue;
+
+            minorColNum = 0;
+            for (int colNum = 0; colNum < cols; colNum++)
+            {
+                if (colNum == excludeColNum)
+                    continue;
+
+                m.values[minorRowNum][minorColNum] = this.values[rowNum][colNum];
+                minorColNum++;
+            }
+            minorRowNum++;
+        }
+
+        return m;
+    }
+
+    public void multiplyScalar(float s)
+    {
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+            for (int colNum = 0; colNum < cols; colNum++)
+                values[rowNum][colNum] *= s;
+    }
+
+    public Matrix transpose()
+    {
+        Matrix tr = new Matrix(this.cols, this.rows);
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+            for (int colNum = 0; colNum < cols; colNum++)
+                tr.values[colNum][rowNum] = this.values[rowNum][colNum];
+        return tr;
+    }
+
+    // this is a computationally heavy operation!
+    public Matrix inverse()
+    {
+        Matrix inv = new Matrix(rows, cols);
+
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+            for (int colNum = 0; colNum < cols; colNum++)
+                inv.values[rowNum][colNum] = (float)Math.pow(-1, rowNum + colNum)
+                    * this.minor(rowNum, colNum).determinant();
+
+        float det = determinant();
+        inv = inv.transpose();
+        inv.multiplyScalar( 1.0f/det );
+        return inv;
+    }
+
     // static methods
 
     public static Matrix makeIdentity()
@@ -138,7 +230,7 @@ public class Matrix
 
     public static Matrix makePerspective(double angleOfView, double aspectRatio, double near, double far)
     {
-        
+
         float a = (float)(angleOfView * Math.PI/180.0);
         float d = (float)(1.0 / Math.tan(a/2));
         float r = (float)aspectRatio;
