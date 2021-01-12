@@ -6,8 +6,6 @@ public class Vector
 {
 	public float[] values;
 
-    // TODO: add to Ch 2 & 3
-    // initialize with array of zeroes
     public Vector(int size)
     {
         values = new float[3];
