@@ -19,7 +19,7 @@ public class Test_4_1 extends Base
         scene    = new Scene();
         camera   = new Camera();
         camera.setPosition( new Vector(0,0,4) );
-        Geometry geometry = new RectangleGeometry();
+        Geometry geometry = new PolygonGeometry(16, 1);
         Material material = new SurfaceMaterial();
         // to change value from default, for example:
         // material.renderSettings.get("pointSize").data = 32;
@@ -29,8 +29,8 @@ public class Test_4_1 extends Base
 
     public void update()
     {
-        mesh.rotateY( 0.0448f, true );
-        mesh.rotateX( 0.0337f, true );
+        mesh.rotateY( 0.0123f, true );
+        mesh.rotateX( 0.0237f, true );
         renderer.render(scene, camera);
     }
 

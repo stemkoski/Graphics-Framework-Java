@@ -2,7 +2,6 @@ package graphics.geometry;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import graphics.math.Vector;
 
 public class RectangleGeometry extends Geometry

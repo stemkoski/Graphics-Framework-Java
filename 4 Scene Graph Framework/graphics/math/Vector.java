@@ -21,6 +21,14 @@ public class Vector
         	values[i] = v[i];
     }
 
+    // initialize with contents
+    public Vector(double... v)
+    {
+        values = new float[v.length];
+        for (int i = 0; i < v.length; i++)
+            values[i] = (float)v[i];
+    }
+
     public String toString()
     {
     	String s = "[";
