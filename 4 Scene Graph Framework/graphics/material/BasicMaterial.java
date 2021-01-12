@@ -12,7 +12,7 @@ public class BasicMaterial extends Material
 			OpenGLUtils.readFileAsString("graphics/material/BasicMaterial.frag")  );
 		
 		addUniform("vec3", "baseColor", new Vector(1,1,1) );
-		addUniform("bool", "useVertexColors", 1);
+		addUniform("bool", "useVertexColors", 0);
 		locateUniforms();
 	}
 }
