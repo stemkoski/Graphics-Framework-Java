@@ -19,7 +19,7 @@ public class Test_4_1 extends Base
         scene    = new Scene();
         camera   = new Camera();
         camera.setPosition( new Vector(0,0,3) );
-        Geometry geometry = new PlaneGeometry();
+        Geometry geometry = new EllipsoidGeometry(2,1,0.5, 32,16);
         Material material = new SurfaceMaterial();
         // to change value from default, for example:
         // material.renderSettings.get("pointSize").data = 32;
