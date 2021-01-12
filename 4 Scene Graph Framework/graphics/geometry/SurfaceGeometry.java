@@ -9,8 +9,8 @@ import graphics.math.Surface;
 public class SurfaceGeometry extends Geometry
 {
 	public SurfaceGeometry( Surface.Function function,
-		float uStart, float uEnd, int uResolution, 
-    	float vStart, float vEnd, int vResolution  )
+		double uStart, double uEnd, int uResolution, 
+    	double vStart, double vEnd, int vResolution  )
 	{
 		Surface surface = new Surface(function);
 

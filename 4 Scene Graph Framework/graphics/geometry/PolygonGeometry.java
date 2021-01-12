@@ -11,7 +11,7 @@ public class PolygonGeometry extends Geometry
 		this(3, 1);
 	}
 
-	public PolygonGeometry(int sides, float radius)
+	public PolygonGeometry(int sides, double radius)
 	{
 		float A = (float)(2 * Math.PI / sides);
 		ArrayList<Vector> positionList = new ArrayList<Vector>();

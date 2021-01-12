@@ -4,7 +4,7 @@ import graphics.math.Vector;
 
 public class PlaneGeometry extends SurfaceGeometry
 {
-	public PlaneGeometry( float width, float height, 
+	public PlaneGeometry( double width, double height, 
 		int widthSegments, int heightSegments )
 	{
 		super( (u,v) -> { return new Vector(u,v,0); },

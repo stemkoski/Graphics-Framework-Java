@@ -11,7 +11,7 @@ public class RectangleGeometry extends Geometry
 		this(1,1);
 	}
 
-	public RectangleGeometry(float width, float height)
+	public RectangleGeometry(double width, double height)
 	{
 		Vector P0 = new Vector(-width/2, -height/2, 0);
 		Vector P1 = new Vector( width/2, -height/2, 0);

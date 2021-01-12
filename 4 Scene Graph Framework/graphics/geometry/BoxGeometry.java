@@ -11,7 +11,7 @@ public class BoxGeometry extends Geometry
 		this(1,1,1);
 	}
 
-	public BoxGeometry(float width, float height, float depth)
+	public BoxGeometry(double width, double height, double depth)
 	{
 		// corners of a cube
 		Vector P0 = new Vector(-width/2, -height/2, -depth/2);
