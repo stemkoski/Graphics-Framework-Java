@@ -1,4 +1,4 @@
-package core;
+package graphics.core;
 
 import java.util.ArrayList;
 

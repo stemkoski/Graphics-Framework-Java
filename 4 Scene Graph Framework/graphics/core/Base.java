@@ -1,4 +1,4 @@
-package core;
+package graphics.core;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;

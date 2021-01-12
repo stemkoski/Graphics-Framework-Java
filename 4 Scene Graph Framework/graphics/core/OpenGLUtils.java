@@ -1,4 +1,4 @@
-package core;
+package graphics.core;
 
 import static org.lwjgl.opengl.GL40.*;
 import java.nio.file.Files;

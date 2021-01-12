@@ -2,12 +2,9 @@ package core;
 
 public class Matrix
 {
-
-    // TODO: inverse? determinant? lookAt? setPosition/getPosition/setDirection/getDirection?
-
-    private int rows, cols;
-    private float[][] values;
-    private float[] flatValues;
+    public int rows, cols;
+    public float[][] values;
+    public float[] flatValues;
 
     // constructor
     public Matrix(int rows, int cols)
