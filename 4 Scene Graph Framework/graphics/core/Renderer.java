@@ -3,6 +3,7 @@ package graphics.core;
 import static org.lwjgl.opengl.GL40.*;
 import java.util.List;
 import java.util.ArrayList;
+import graphics.math.Vector;
 
 public class Renderer
 {

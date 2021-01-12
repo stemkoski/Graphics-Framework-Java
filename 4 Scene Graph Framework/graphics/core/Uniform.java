@@ -2,6 +2,8 @@ package graphics.core;
 
 import static org.lwjgl.opengl.GL40.*;
 import java.util.Arrays;
+import graphics.math.Vector;
+import graphics.math.Matrix;
 
 public class Uniform<T>
 {

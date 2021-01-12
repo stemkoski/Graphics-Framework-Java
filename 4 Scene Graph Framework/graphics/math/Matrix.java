@@ -1,4 +1,4 @@
-package graphics.core;
+package graphics.math;
 
 public class Matrix
 {

@@ -1,4 +1,4 @@
-package graphics.core;
+package graphics.math;
 
 import java.util.List;
 
@@ -52,22 +52,4 @@ public class Vector
         }
         return flattened;
     }
-    /*
-    // assumes all vectors in list have same length.
-    // particularly useful for working with attribute data / geometry lists
-    public static Vector merge(Vector... vecList)
-    {
-        int listSize = vecList.length;
-        int vecSize  = vecList[0].values.length;
-        Vector mergeVec = new Vector(listSize * vecSize);
-        for (int vecNumber = 0; vecNumber < vlistSize; vecNumber++)
-        {  
-            Vector v = vecList[vecNumber];
-            for (int i = 0; i < vecSize; i++)
-                mergeVec.values[vecNumber * vecSize + i] = v.values[i];
-        }
-        return mergeVec;
-    }
-    */
-
 }

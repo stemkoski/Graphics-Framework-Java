@@ -1,6 +1,8 @@
 package graphics.core;
 
 import java.util.ArrayList;
+import graphics.math.Vector;
+import graphics.math.Matrix;
 
 public class Object3D
 {

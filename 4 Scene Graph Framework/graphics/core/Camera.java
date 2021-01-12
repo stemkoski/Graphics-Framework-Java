@@ -1,5 +1,7 @@
 package graphics.core;
 
+import graphics.math.Matrix;
+
 public class Camera extends Object3D
 {
 	public Matrix viewMatrix;

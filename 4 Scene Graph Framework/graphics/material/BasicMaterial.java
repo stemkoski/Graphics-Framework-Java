@@ -1,7 +1,7 @@
 package graphics.material;
 
 import graphics.core.OpenGLUtils;
-import graphics.core.Vector;
+import graphics.math.Vector;
 
 public class BasicMaterial extends Material
 {
