@@ -38,6 +38,16 @@ public class Matrix
         }
     }
 
+    public void setValues(double... v)
+    {
+        for (int i = 0; i < v.length; i++)
+        {
+            int row = i / cols;
+            int col = i % cols;
+            values[row][col] = (float)v[i];
+        }
+    }
+
     public Vector getRow(int i)
     {
         float[] row = new float[cols];
@@ -52,6 +62,17 @@ public class Matrix
         for (int i = 0; i < rows; i++)
             col[i] = values[i][j];
         return new Vector(col);
+    }
+
+    public Vector multiplyVector(Vector v)
+    {
+        Vector w = new Vector( v.values.length );
+        for (int i = 0; i < rows; i++)
+        {
+            Vector row = getRow(i);
+            w.values[i] = Vector.dot(row, v);
+        }
+        return w;
     }
 
     public static Matrix multiply(Matrix A, Matrix B)
@@ -184,7 +205,7 @@ public class Matrix
         return m;
     }
     
-    public static Matrix makeTranslation(float x, float y, float z)
+    public static Matrix makeTranslation(double x, double y, double z)
     {
         Matrix m = new Matrix(4,4);
         m.setValues(1,0,0,x, 0,1,0,y, 0,0,1,z, 0,0,0,1);

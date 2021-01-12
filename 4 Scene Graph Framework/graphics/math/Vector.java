@@ -1,6 +1,7 @@
 package graphics.math;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Vector
 {
@@ -8,7 +9,7 @@ public class Vector
 
     public Vector(int size)
     {
-        values = new float[3];
+        values = new float[size];
     }
 
     // initialize with contents
@@ -25,6 +26,16 @@ public class Vector
         values = new float[v.length];
         for (int i = 0; i < v.length; i++)
             values[i] = (float)v[i];
+    }
+
+    // resize values array (larger or smaller)
+    public void resize(int newSize)
+    {
+        float[] newValues = new float[newSize];
+        int smaller = Math.min(values.length, newValues.length);
+        for (int i = 0; i < smaller; i++)
+            newValues[i] = values[i];
+        values = newValues;
     }
 
     public String toString()
@@ -57,5 +68,19 @@ public class Vector
                 flattened[vecNumber * vecSize + i] = v.values[i];
         }
         return flattened;
+    }
+
+    public static List<Vector> unflattenList(float[] flatArray, int vecSize)
+    {
+        List<Vector> vecList = new ArrayList<Vector>();
+        float[] tempData = new float[vecSize];
+        for (int i = 0; i < flatArray.length; i += vecSize)
+        {
+            for (int j = 0; j < vecSize; j++)
+                tempData[j] = flatArray[i + j];
+
+            vecList.add( new Vector(tempData) );
+        }
+        return vecList;
     }
 }

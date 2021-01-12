@@ -1,7 +1,5 @@
 package graphics.geometry;
 
-import graphics.math.Vector;
-
 public class SphereGeometry extends EllipsoidGeometry
 {
 	public SphereGeometry( double radius, 
