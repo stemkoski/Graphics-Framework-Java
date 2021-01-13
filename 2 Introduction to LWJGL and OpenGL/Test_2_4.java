@@ -1,20 +1,16 @@
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
 
 public class Test_2_4 extends Base
 {
-    public int programRef, 
-        vaoTri, vertexCountTri,
-        vaoSquare, vertexCountSquare;
+    public int programRef, vaoTri, vaoSquare;
 
     public void initialize()
     {
         // load code, send to GPU, and compile; store program reference
-        String vertCode = OpenGLUtils.readFileAsString("Test_2_3.vert");
-        String fragCode = OpenGLUtils.readFileAsString("Test_2_3.frag");
-        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
+        programRef = OpenGLUtils.initFromFiles(
+            "Test_2_3.vert", "Test_2_3.frag" );
 
         // render settings (optional)
 
@@ -29,7 +25,6 @@ public class Test_2_4 extends Base
                  -0.5f, 0.8f, 0.0f,
                  -0.2f, 0.2f, 0.0f,
                  -0.8f, 0.2f, 0.0f  };
-        vertexCountTri = positionDataTri.length / 3;
         Attribute positionAttributeTri = new Attribute( "vec3", positionDataTri );
         positionAttributeTri.associateVariable( programRef, "position" );
 
@@ -42,7 +37,6 @@ public class Test_2_4 extends Base
                  0.8f, 0.2f, 0.0f,
                  0.2f, 0.2f, 0.0f,
                  0.2f, 0.8f, 0.0f  };
-        vertexCountSquare = positionDataSquare.length / 3;
         Attribute positionAttributeSquare = new Attribute( "vec3", positionDataSquare );
         positionAttributeSquare.associateVariable( programRef, "position" );
     }
@@ -54,11 +48,11 @@ public class Test_2_4 extends Base
 
         // draw the triangle
         glBindVertexArray( vaoTri );
-        glDrawArrays( GL_LINE_LOOP , 0 , vertexCountTri );
+        glDrawArrays( GL_LINE_LOOP , 0 , 3 );
 
         // draw the square
         glBindVertexArray( vaoSquare );
-        glDrawArrays( GL_LINE_LOOP , 0 , vertexCountSquare );
+        glDrawArrays( GL_LINE_LOOP , 0 , 4 );
     }
 
     // driver method

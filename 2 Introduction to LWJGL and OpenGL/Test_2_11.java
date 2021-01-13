@@ -1,20 +1,20 @@
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
+import graphics.math.*;
 
 public class Test_2_11 extends Base
 {
-    public int programRef, vaoRef, vertexCount;
+    public int programRef, vaoRef;
     public Uniform<Vector> translation, baseColor;
     public float speed = 0.5f;
 
     public void initialize()
     {
         // load code, send to GPU, and compile; store program reference
-        String vertCode = OpenGLUtils.readFileAsString("Test_2_6.vert");
-        String fragCode = OpenGLUtils.readFileAsString("Test_2_6.frag");
-        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
+        programRef = OpenGLUtils.initFromFiles(
+            "Test_2_6.vert", "Test_2_6.frag" );
 
         // specify color used when clearing the screen
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -27,7 +27,6 @@ public class Test_2_11 extends Base
                   0.0f,  0.2f, 0.0f,
                   0.2f, -0.2f, 0.0f,
                  -0.2f, -0.2f, 0.0f  };
-        vertexCount = positionData.length / 3;
         Attribute positionAttribute = new Attribute( "vec3", positionData );
         positionAttribute.associateVariable( programRef, "position" );
 
@@ -41,7 +40,6 @@ public class Test_2_11 extends Base
 
     public void update()
     {
-
         // update data
 
         float distance = speed * deltaTime;
@@ -63,8 +61,7 @@ public class Test_2_11 extends Base
         glBindVertexArray( vaoRef );
         translation.uploadData();
         baseColor.uploadData();
-        glDrawArrays( GL_TRIANGLES, 0, vertexCount );
-
+        glDrawArrays( GL_TRIANGLES, 0, 3 );
     }
 
     // driver method

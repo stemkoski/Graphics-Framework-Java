@@ -5,33 +5,25 @@ import java.util.ArrayList;
 
 public class Vector
 {
-	public float[] values;
+	public double[] values;
 
     public Vector(int size)
     {
-        values = new float[size];
-    }
-
-    // initialize with contents
-	public Vector(float... v)
-    {
-    	values = new float[v.length];
-        for (int i = 0; i < v.length; i++)
-        	values[i] = v[i];
+        values = new double[size];
     }
 
     // initialize with contents
     public Vector(double... v)
     {
-        values = new float[v.length];
+        values = new double[v.length];
         for (int i = 0; i < v.length; i++)
-            values[i] = (float)v[i];
+            values[i] = (double)v[i];
     }
 
     // resize values array (larger or smaller)
     public void resize(int newSize)
     {
-        float[] newValues = new float[newSize];
+        double[] newValues = new double[newSize];
         int smaller = Math.min(values.length, newValues.length);
         for (int i = 0; i < smaller; i++)
             newValues[i] = values[i];
@@ -47,15 +39,15 @@ public class Vector
         return s;
     }
 
-    public static float dot(Vector v, Vector w)
+    public static double dot(Vector v, Vector w)
     {
-		float c = 0;
+		double c = 0;
         for (int i = 0; i < v.values.length; i++)
             c += v.values[i] * w.values[i];
         return c;
     }
 
-    // used by geometry classes
+    // used by geometry/attribute classes, so must set floats
     public static float[] flattenList(List<Vector> vecList)
     {
         int listSize = vecList.size();
@@ -65,7 +57,7 @@ public class Vector
         {  
             Vector v = vecList.get(vecNumber);
             for (int i = 0; i < vecSize; i++)
-                flattened[vecNumber * vecSize + i] = v.values[i];
+                flattened[vecNumber * vecSize + i] = (float)v.values[i];
         }
         return flattened;
     }
@@ -73,7 +65,7 @@ public class Vector
     public static List<Vector> unflattenList(float[] flatArray, int vecSize)
     {
         List<Vector> vecList = new ArrayList<Vector>();
-        float[] tempData = new float[vecSize];
+        double[] tempData = new double[vecSize];
         for (int i = 0; i < flatArray.length; i += vecSize)
         {
             for (int j = 0; j < vecSize; j++)

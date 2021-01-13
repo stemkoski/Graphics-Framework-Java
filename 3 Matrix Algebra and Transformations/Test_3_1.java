@@ -1,7 +1,8 @@
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
+import graphics.math.*;
 
 /* will use for testing Matrix class */
 public class Test_3_1 extends Base

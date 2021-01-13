@@ -1,4 +1,4 @@
-import core.*;
+import graphics.core.*;
 
 // GLFW = Graphics Library FrameWork
 

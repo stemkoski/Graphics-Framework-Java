@@ -1,7 +1,8 @@
-package core;
+package graphics.core;
 
 import static org.lwjgl.opengl.GL40.*;
 import java.util.Arrays;
+import graphics.math.*;
 
 public class Uniform<T>
 {
@@ -48,17 +49,17 @@ public class Uniform<T>
 		else if (dataType.equals("vec2"))
 		{
 			Vector v = (Vector)data;
-			glUniform2f(variableRef, v.values[0], v.values[1]);
+			glUniform2f(variableRef, (float)v.values[0], (float)v.values[1]);
 		}
 		else if (dataType.equals("vec3"))
 		{
 			Vector v = (Vector)data;
-			glUniform3f(variableRef, v.values[0], v.values[1], v.values[2]);
+			glUniform3f(variableRef, (float)v.values[0], (float)v.values[1], (float)v.values[2]);
 		}
 		else if (dataType.equals("vec4"))
 		{
 			Vector v = (Vector)data;
-			glUniform4f(variableRef, v.values[0], v.values[1], v.values[2], v.values[3]);
+			glUniform4f(variableRef, (float)v.values[0], (float)v.values[1], (float)v.values[2], (float)v.values[3]);
 		}
 		else if (dataType.equals("mat4"))
 		{

@@ -1,21 +1,21 @@
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
+import graphics.math.*;
 
 /* will use for testing Matrix class */
 public class Test_3_2 extends Base
 {
-    public int programRef, vaoRef, vertexCount;
+    public int programRef, vaoRef;
     public Uniform<Matrix> modelMatrix, projectionMatrix;
     public float moveSpeed, turnSpeed;
 
     public void initialize()
     {
         // load code, send to GPU, and compile; store program reference
-        String vertCode = OpenGLUtils.readFileAsString("Test_3_2.vert");
-        String fragCode = OpenGLUtils.readFileAsString("Test_3_2.frag");
-        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
+        programRef = OpenGLUtils.initFromFiles(
+            "Test_3_2.vert", "Test_3_2.frag" );
 
         // specify color used when clearing the screen
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -29,7 +29,6 @@ public class Test_3_2 extends Base
                   0.0f,  0.2f, 0.0f,
                   0.1f, -0.2f, 0.0f,
                  -0.1f, -0.2f, 0.0f  };
-        vertexCount = positionData.length / 3;
         Attribute positionAttribute = new Attribute( "vec3", positionData );
         positionAttribute.associateVariable( programRef, "position" );
 
@@ -124,7 +123,7 @@ public class Test_3_2 extends Base
         glBindVertexArray( vaoRef );
         modelMatrix.uploadData();
         projectionMatrix.uploadData();
-        glDrawArrays( GL_TRIANGLES, 0, vertexCount );
+        glDrawArrays( GL_TRIANGLES, 0, 3 );
     }
 
     // driver method

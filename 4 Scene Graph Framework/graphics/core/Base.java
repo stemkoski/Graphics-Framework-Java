@@ -13,6 +13,9 @@ import static org.lwjgl.opengl.GL40.*;
 
 public abstract class Base
 {
+    // window dimensions
+    private int windowWidth;
+    private int windowHeight;
     // the window handle
     private long window;
     // is the main loop currently active?
@@ -28,10 +31,17 @@ public abstract class Base
     private long previousTime;
     private long currentTime;
 
-    // constructor
+    // constructors
+    public Base(int windowWidth, int windowHeight)
+    {
+        this.windowWidth  = windowWidth;
+        this.windowHeight = windowHeight;
+    }
+
+    // initialize with default size
     public Base()
     {
-
+        this(1024, 1024);
     }
 
     public void startup()
@@ -48,7 +58,9 @@ public abstract class Base
 
         // create window and associated OpenGL context (context stores framebuffer and other state information)
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-        window = glfwCreateWindow(1024, 1024, "Graphics Window", 0, 0);
+        window = glfwCreateWindow(
+            windowWidth, windowHeight,
+            "Graphics Window", 0, 0);
         if ( window == 0 )
             throw new RuntimeException("Failed to create the GLFW window");
 

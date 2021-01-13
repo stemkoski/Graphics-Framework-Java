@@ -1,12 +1,17 @@
-package core;
+package graphics.math;
 
 public class Vector
 {
-	public float[] values;
+	public double[] values;
 
-	public Vector(float... v)
+    public Vector(int size)
     {
-    	values = new float[v.length];
+        values = new double[size];
+    }
+    
+	public Vector(double... v)
+    {
+    	values = new double[v.length];
         for (int i = 0; i < v.length; i++)
         	values[i] = v[i];
     }
@@ -20,9 +25,9 @@ public class Vector
         return s;
     }
 
-    public static float dot(Vector v, Vector w)
+    public static double dot(Vector v, Vector w)
     {
-		float c = 0;
+		double c = 0;
         for (int i = 0; i < v.values.length; i++)
             c += v.values[i] * w.values[i];
         return c;

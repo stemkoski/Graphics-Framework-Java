@@ -1,7 +1,6 @@
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
 
 public class Test_2_3 extends Base
 {
@@ -10,9 +9,8 @@ public class Test_2_3 extends Base
     public void initialize()
     {
         // load code, send to GPU, and compile; store program reference
-        String vertCode = OpenGLUtils.readFileAsString("Test_2_3.vert");
-        String fragCode = OpenGLUtils.readFileAsString("Test_2_3.frag");
-        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
+        programRef = OpenGLUtils.initFromFiles(
+            "Test_2_3.vert", "Test_2_3.frag" );
 
         // render settings (optional)
 

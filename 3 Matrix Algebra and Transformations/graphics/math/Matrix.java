@@ -1,9 +1,9 @@
-package core;
+package graphics.math;
 
 public class Matrix
 {
     public int rows, cols;
-    public float[][] values;
+    public double[][] values;
     public float[] flatValues;
 
     // constructor
@@ -11,16 +11,16 @@ public class Matrix
     {  
         this.rows = rows;
         this.cols = cols;
-        this.values = new float[rows][cols];
+        this.values = new double[rows][cols];
         this.flatValues = new float[rows*cols];
     }
 
     // required format for GLSL, helpful for copying data to new matrix
     public float[] flatten()
     {
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
-                flatValues[j + i*cols] = (float)values[i][j];
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+            for (int colNum = 0; colNum < cols; colNum++)
+                flatValues[colNum + rowNum*cols] = (float)values[rowNum][colNum];
 
         return flatValues;
     }
@@ -28,30 +28,41 @@ public class Matrix
     /** 
         set values in row order
     */
-    public void setValues(float... v)
+    public void setValues(double... v)
     {
         for (int i = 0; i < v.length; i++)
         {
-            int row = i / cols;
-            int col = i % cols;
-            values[row][col] = v[i];
+            int rowNum = i / cols;
+            int colNum = i % cols;
+            values[rowNum][colNum] = v[i];
         }
     }
 
-    public Vector getRow(int i)
+    public Vector getRow(int rowNum)
     {
-        float[] row = new float[cols];
-        for (int j = 0; j < cols; j++)
-            row[j] = values[i][j];
-        return new Vector(row);
+        Vector row = new Vector(this.cols);
+        for (int colNum = 0; colNum < cols; colNum++)
+            row.values[colNum] = this.values[rowNum][colNum];
+        return row;
     }
 
-    public Vector getCol(int j)
+    public Vector getCol(int colNum)
     {
-        float[] col = new float[rows];
-        for (int i = 0; i < rows; i++)
-            col[i] = values[i][j];
-        return new Vector(col);
+        Vector col = new Vector(this.rows);
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+            col.values[rowNum] = this.values[rowNum][colNum];
+        return col;
+    }
+
+    public Vector multiplyVector(Vector vec)
+    {
+        Vector result = new Vector( vec.values.length );
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+        {
+            Vector row = getRow(rowNum);
+            result.values[rowNum] = Vector.dot(row, vec);
+        }
+        return result;
     }
 
     public static Matrix multiply(Matrix A, Matrix B)
@@ -60,34 +71,34 @@ public class Matrix
             return null;
 
         Matrix C = new Matrix(A.rows, B.cols);
-        for (int i = 0; i < A.rows; i++)
-            for (int j = 0; j < B.cols; j++)
-                C.values[i][j] = Vector.dot( A.getRow(i), B.getCol(j) );
+        for (int rowNum = 0; rowNum < A.rows; rowNum++)
+            for (int colNum = 0; colNum < B.cols; colNum++)
+                C.values[rowNum][colNum] = Vector.dot( A.getRow(rowNum), B.getCol(colNum) );
         return C;
     }
 
     // replace this matrix with (M * this)
     public void leftMultiply(Matrix M)
     {
-        this.setValues( Matrix.multiply(M, this).flatten() );
+        this.values = Matrix.multiply(M, this).values;
     }
 
     // replace this matrix with (this * M)
     public void rightMultiply(Matrix M)
     {
-        this.setValues( Matrix.multiply(this, M).flatten() );
+        this.values = Matrix.multiply(this, M).values;
     }
 
     public String toString()
     {
         String s = "";
-        for (int i = 0; i < rows; i++)
-            s += getRow(i).toString() + "\n";
+        for (int rowNum = 0; rowNum < rows; rowNum++)
+            s += getRow(rowNum).toString() + "\n";
         return s;
     }
 
     // inverse related methods; require square matrix
-    public float determinant() 
+    public double determinant() 
     {
         // if (rows != cols)
         //     throw new Exception();
@@ -99,24 +110,12 @@ public class Matrix
 
         // for larger matrices, calculate determinant 
         //   using cofactor expansion along first row
-        float det = 0;
+        double det = 0;
         for (int colNum = 0; colNum < cols; colNum++)
-            det += (float)Math.pow(-1, colNum) * values[0][colNum] * minor(0, colNum).determinant();
+            det += Math.pow(-1, colNum) * values[0][colNum] * minor(0, colNum).determinant();
         return det;
     }
 
-
-    // TODO: row != rowNum (!!!!)
-    /*
-        0 1 2 3 4
-        exclude 2
-
-        rowIndex
-
-        minorRowIndex
-
-
-    */
     // generate (rows-1) by (cols-1) submatrix, excluding given row and col.
     public Matrix minor(int excludeRowNum, int excludeColNum)
     {
@@ -143,7 +142,7 @@ public class Matrix
         return m;
     }
 
-    public void multiplyScalar(float s)
+    public void multiplyScalar(double s)
     {
         for (int rowNum = 0; rowNum < rows; rowNum++)
             for (int colNum = 0; colNum < cols; colNum++)
@@ -166,10 +165,10 @@ public class Matrix
 
         for (int rowNum = 0; rowNum < rows; rowNum++)
             for (int colNum = 0; colNum < cols; colNum++)
-                inv.values[rowNum][colNum] = (float)Math.pow(-1, rowNum + colNum)
+                inv.values[rowNum][colNum] = Math.pow(-1, rowNum + colNum)
                     * this.minor(rowNum, colNum).determinant();
 
-        float det = determinant();
+        double det = determinant();
         inv = inv.transpose();
         inv.multiplyScalar( 1.0f/det );
         return inv;
@@ -184,7 +183,7 @@ public class Matrix
         return m;
     }
     
-    public static Matrix makeTranslation(float x, float y, float z)
+    public static Matrix makeTranslation(double x, double y, double z)
     {
         Matrix m = new Matrix(4,4);
         m.setValues(1,0,0,x, 0,1,0,y, 0,0,1,z, 0,0,0,1);
@@ -193,8 +192,8 @@ public class Matrix
 
     public static Matrix makeRotationZ(double angle)
     {
-        float c = (float)(Math.cos(angle));
-        float s = (float)(Math.sin(angle));
+        double c = Math.cos(angle);
+        double s = Math.sin(angle);
         Matrix m = new Matrix(4,4);
         m.setValues(c,-s,0,0, s,c,0,0, 0,0,1,0, 0,0,0,1);
         return m;
@@ -202,8 +201,8 @@ public class Matrix
 
     public static Matrix makeRotationX(double angle)
     {
-        float c = (float)(Math.cos(angle));
-        float s = (float)(Math.sin(angle));
+        double c = Math.cos(angle);
+        double s = Math.sin(angle);
         Matrix m = new Matrix(4,4);
         m.setValues(1,0,0,0, 0,c,-s,0, 0,s,c,0, 0,0,0,1);
         return m;
@@ -211,14 +210,14 @@ public class Matrix
 
     public static Matrix makeRotationY(double angle)
     {
-        float c = (float)(Math.cos(angle));
-        float s = (float)(Math.sin(angle));
+        double c = Math.cos(angle);
+        double s = Math.sin(angle);
         Matrix m = new Matrix(4,4);
         m.setValues(c,0,s,0, 0,1,0,0, -s,0,c,0, 0,0,0,1);
         return m;
     }
 
-    public static Matrix makeScale(float s)
+    public static Matrix makeScale(double s)
     {
         Matrix m = new Matrix(4,4);
         m.setValues(s,0,0,0, 0,s,0,0, 0,0,s,0, 0,0,0,1);
@@ -228,11 +227,11 @@ public class Matrix
     public static Matrix makePerspective(double angleOfView, double aspectRatio, double near, double far)
     {
 
-        float a = (float)(angleOfView * Math.PI/180.0);
-        float d = (float)(1.0 / Math.tan(a/2));
-        float r = (float)aspectRatio;
-        float b = (float)((far + near) / (near - far));
-        float c = (float)(2*far*near / (near - far));
+        double a = Math.toRadians(angleOfView);
+        double d = 1.0 / Math.tan(a/2);
+        double r = aspectRatio;
+        double b = (far + near) / (near - far);
+        double c = 2*far*near / (near - far);
         Matrix m = new Matrix(4,4);
         m.setValues(d/r,0,0,0, 0,d,0,0, 0,0,b,c, 0,0,-1,0);
         return m;

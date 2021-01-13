@@ -1,18 +1,16 @@
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
 
 public class Test_2_5 extends Base
 {
-    public int programRef, vaoRef, vertexCount;
+    public int programRef, vaoRef;
 
     public void initialize()
     {
         // load code, send to GPU, and compile; store program reference
-        String vertCode = OpenGLUtils.readFileAsString("Test_2_5.vert");
-        String fragCode = OpenGLUtils.readFileAsString("Test_2_5.frag");
-        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
+        programRef = OpenGLUtils.initFromFiles(
+            "Test_2_5.vert", "Test_2_5.frag" );
 
         // render settings (optional)
 
@@ -31,7 +29,6 @@ public class Test_2_5 extends Base
                  -0.8f,  0.0f, 0.0f,
                  -0.4f, -0.6f, 0.0f,
                   0.4f, -0.6f, 0.0f  };
-        vertexCount = positionData.length / 3;
         Attribute positionAttribute = new Attribute( "vec3", positionData );
         positionAttribute.associateVariable( programRef, "position" );
 
@@ -52,7 +49,7 @@ public class Test_2_5 extends Base
 
         // draw the object
         glBindVertexArray( vaoRef );
-        glDrawArrays( GL_LINE_LOOP , 0 , vertexCount );
+        glDrawArrays( GL_LINE_LOOP , 0 , 6 );
     }
 
     // driver method

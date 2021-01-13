@@ -6,7 +6,15 @@ import java.nio.file.Paths;
 
 public class OpenGLUtils
 {
-    public static String readFileAsString(String fileName) 
+    public static int initFromFiles( 
+        String vertexShaderFileName, String fragmentShaderFileName )
+    {
+        return initProgram(
+            readFile(vertexShaderFileName), 
+            readFile(fragmentShaderFileName) );
+    }
+
+    public static String readFile(String fileName) 
     {
         String text = ""; 
         try 
@@ -23,7 +31,7 @@ public class OpenGLUtils
     // for storing debug codes
     static int[] status = new int[1];
 
-    public static int initializeShader(String shaderCode, int shaderType)
+    public static int initShader(String shaderCode, int shaderType)
     {
         // specify specific OpenGL version
         shaderCode = "#version 330 \n" + shaderCode;
@@ -55,10 +63,10 @@ public class OpenGLUtils
         return shaderRef;
     }
 
-    public static int initializeProgram(String vertexShaderCode, String fragmentShaderCode) {
+    public static int initProgram(String vertexShaderCode, String fragmentShaderCode) {
 
-        int vertexShaderRef = OpenGLUtils.initializeShader(vertexShaderCode, GL_VERTEX_SHADER);
-        int fragmentShaderRef = OpenGLUtils.initializeShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
+        int vertexShaderRef   = initShader(vertexShaderCode, GL_VERTEX_SHADER);
+        int fragmentShaderRef = initShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
 
         // create empty program object and store reference to it
         int programRef = glCreateProgram();

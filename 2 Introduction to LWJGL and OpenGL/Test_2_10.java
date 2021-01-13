@@ -1,7 +1,6 @@
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
 
 public class Test_2_10 extends Base
 {

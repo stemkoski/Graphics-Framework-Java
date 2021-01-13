@@ -1,20 +1,19 @@
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
-import core.*;
+import graphics.core.*;
+import graphics.math.Vector;
 
 public class Test_2_6 extends Base
 {
-    public int programRef, vaoRef, vertexCount;
+    public int programRef, vaoRef;
     public Uniform<Vector> translation1, translation2,
                    baseColor1, baseColor2;
 
     public void initialize()
     {
         // load code, send to GPU, and compile; store program reference
-        String vertCode = OpenGLUtils.readFileAsString("Test_2_6.vert");
-        String fragCode = OpenGLUtils.readFileAsString("Test_2_6.frag");
-        programRef = OpenGLUtils.initializeProgram(vertCode, fragCode);
+        programRef = OpenGLUtils.initFromFiles(
+            "Test_2_6.vert", "Test_2_6.frag" );
 
         // setup vertex array object
         vaoRef = glGenVertexArrays();
@@ -24,7 +23,6 @@ public class Test_2_6 extends Base
                   0.0f,  0.2f, 0.0f,
                   0.2f, -0.2f, 0.0f,
                  -0.2f, -0.2f, 0.0f  };
-        vertexCount = positionData.length / 3;
         Attribute positionAttribute = new Attribute( "vec3", positionData );
         positionAttribute.associateVariable( programRef, "position" );
 
@@ -48,12 +46,12 @@ public class Test_2_6 extends Base
         // draw the first triangle
         translation1.uploadData();
         baseColor1.uploadData();
-        glDrawArrays( GL_TRIANGLES, 0, vertexCount );
+        glDrawArrays( GL_TRIANGLES, 0, 3 );
 
         // draw the second triangle
         translation2.uploadData();
         baseColor2.uploadData();
-        glDrawArrays( GL_TRIANGLES, 0, vertexCount );
+        glDrawArrays( GL_TRIANGLES, 0, 3 );
     }
 
     // driver method
