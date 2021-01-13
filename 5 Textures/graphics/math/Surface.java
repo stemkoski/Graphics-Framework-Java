@@ -37,4 +37,24 @@ public class Surface
 
     	return points;
     }
+
+    public Vector[][] getUVs(
+        double uStart, double uEnd, int uResolution, 
+        double vStart, double vEnd, int vResolution)
+    {
+
+        Vector[][] uvs = new Vector[uResolution+1][vResolution+1];
+        
+        for (int uIndex = 0; uIndex < uResolution+1; uIndex++)
+        {
+            for (int vIndex = 0; vIndex < vResolution+1; vIndex++)
+            {
+                double u = (double)uIndex/uResolution;
+                double v = (double)vIndex/vResolution;
+                uvs[uIndex][vIndex] = new Vector(u,v);
+            }
+        }
+
+        return uvs;
+    }
 }
