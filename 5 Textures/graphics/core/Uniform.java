@@ -67,6 +67,19 @@ public class Uniform<T>
 			Matrix m = (Matrix)data;
 			glUniformMatrix4fv(variableRef, true, m.flatten());
 		}
-
+		else if (dataType.equals("sampler2D"))
+		{
+			Vector v = (Vector)data;
+			int textureObjectRef = (int)v.values[0];
+			int textureUnitRef   = (int)v.values[1];
+			// activate texture unit
+			glActiveTexture( GL_TEXTURE0 + textureUnitRef );
+			// associate texture object reference to currently active texture unit
+			glBindTexture( GL_TEXTURE_2D, textureObjectRef );
+			// upload texture unit number (0...15) to uniform variable in shader
+			glUniform1i( variableRef, textureUnitRef );
+		}
+		else
+			System.out.println("Unknown uniform type: " + dataType);
 	}
 }

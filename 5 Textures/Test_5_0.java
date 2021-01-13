@@ -1,4 +1,3 @@
-import static org.lwjgl.opengl.GL40.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 import graphics.core.*;
@@ -7,7 +6,7 @@ import graphics.geometry.*;
 import graphics.material.*;
 import graphics.extras.*;
 
-public class Test_4_6 extends Base
+public class Test_5_0 extends Base
 {
     public Renderer renderer;
     public Scene scene;
@@ -34,6 +33,17 @@ public class Test_4_6 extends Base
     	Mesh axes = new AxesHelper(2, 8);
     	axes.translate(0, 0.01, 0, true);
 		scene.add( axes );
+
+        Geometry geometry2 = new RectangleGeometry();
+        Material material2 = new TextureMaterial( new Texture("images/circle-border.png") );
+        Mesh mesh2 = new Mesh(geometry2, material2);
+        mesh2.translate(0,0,1, true);
+        scene.add(mesh2);
+
+        Geometry geometry = new RectangleGeometry();
+        Material material = new TextureMaterial( new Texture("images/grid.png") );
+        Mesh mesh = new Mesh(geometry, material);
+        scene.add(mesh);
     }
 
     public void update()
@@ -45,7 +55,7 @@ public class Test_4_6 extends Base
     // driver method
     public static void main(String[] args)
     {
-        new Test_4_6().run();
+        new Test_5_0().run();
     }
 
 }

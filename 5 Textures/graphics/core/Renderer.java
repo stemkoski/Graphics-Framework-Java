@@ -9,8 +9,13 @@ public class Renderer
 {
 	public Renderer()
 	{
+		// support depth testing
 		glEnable( GL_DEPTH_TEST );
-		
+
+		// support transparency
+		glEnable( GL_BLEND );
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		// required for antialiasing
 		glEnable( GL_MULTISAMPLE );
 	}
