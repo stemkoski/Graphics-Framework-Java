@@ -21,9 +21,7 @@ public class Test_4_4 extends Base
 
         Geometry geometry = new SphereGeometry(3);
 
-        Material material = new Material(
-            OpenGLUtils.readFileAsString("Test_4_4.vert"),
-            OpenGLUtils.readFileAsString("Test_4_4.frag") );
+        Material material = new Material("Test_4_4.vert", "Test_4_4.frag");
         material.locateUniforms();
 
         mesh = new Mesh( geometry, material );

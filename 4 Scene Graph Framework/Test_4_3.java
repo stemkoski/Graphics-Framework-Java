@@ -34,13 +34,13 @@ public class Test_4_3 extends Base
 
         Material lineMaterial = new LineMaterial("connected");
         lineMaterial.uniforms.get("baseColor").data = new Vector(1,0,1);
-        lineMaterial.renderSettings.get("lineWidth").data = 8;
+        lineMaterial.renderSettings.get("lineWidth").data = 4;
         Mesh lineMesh = new Mesh( geometry, lineMaterial );
         scene.add( lineMesh );
 
         Material pointMaterial = new PointMaterial();
         pointMaterial.uniforms.get("baseColor").data = new Vector(1,1,0);
-        pointMaterial.renderSettings.get("pointSize").data = 32;
+        pointMaterial.renderSettings.get("pointSize").data = 8;
         Mesh pointMesh = new Mesh( geometry, pointMaterial );
         scene.add(pointMesh);
     }

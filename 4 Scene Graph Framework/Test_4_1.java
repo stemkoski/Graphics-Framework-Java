@@ -23,6 +23,7 @@ public class Test_4_1 extends Base
         Material material = new SurfaceMaterial();
         // to change value from default, for example:
         // material.renderSettings.get("pointSize").data = 32;
+        material.uniforms.get("useVertexColors").data = 1;
         material.renderSettings.get("wireframe").data = true;
         material.renderSettings.get("lineWidth").data = 8;
         mesh = new Mesh( geometry, material );

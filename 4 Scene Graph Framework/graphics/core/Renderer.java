@@ -17,7 +17,8 @@ public class Renderer
 
 	public void setClearColor( Vector color )
 	{
-		glClearColor(color.values[0], color.values[1], color.values[2], 1);
+		glClearColor(
+			(float)color.values[0], (float)color.values[1], (float)color.values[2], 1);
 	}
 
 	public void render(Scene scene, Camera camera)

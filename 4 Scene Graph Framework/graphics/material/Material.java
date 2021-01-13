@@ -23,10 +23,10 @@ public class Material
 	// Additional settings added by extending classes.
 	public HashMap<String, RenderSetting> renderSettings;
 
-	public Material(String vertexShaderCode, String fragmentShaderCode)
+	public Material(String vertexShaderFileName, String fragmentShaderFileName)
 	{
-		programRef = OpenGLUtils.initializeProgram(
-			vertexShaderCode, fragmentShaderCode);
+		programRef = OpenGLUtils.initFromFiles( 
+			vertexShaderFileName, fragmentShaderFileName );
 
 		drawStyle = GL_TRIANGLES;
 

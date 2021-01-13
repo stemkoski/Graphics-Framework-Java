@@ -45,6 +45,7 @@ public class Test_4_2 extends Base
         geometry.vertexCount = 9;
 
         Material material = new SurfaceMaterial();
+        material.uniforms.get("useVertexColors").data = 1;
         
         mesh = new Mesh( geometry, material );
         scene.add( mesh );
