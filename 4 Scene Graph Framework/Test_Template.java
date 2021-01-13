@@ -28,8 +28,6 @@ public class Test_Template extends Base
 
     public void update()
     {
-        mesh.rotateY( 0.0123f, true );
-        mesh.rotateX( 0.0237f, true );
         renderer.render(scene, camera);
     }
 
