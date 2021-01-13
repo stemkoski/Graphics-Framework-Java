@@ -71,27 +71,27 @@ public class Object3D
 			transform.leftMultiply(m);
 	}
 
-	public void translate(float x, float y, float z, boolean local)
+	public void translate(double x, double y, double z, boolean local)
 	{
 		applyMatrix(Matrix.makeTranslation(x,y,z), local);
 	}
 
-	public void rotateX(float angle, boolean local)
+	public void rotateX(double angle, boolean local)
 	{
 		applyMatrix(Matrix.makeRotationX(angle), local);
 	}
 
-	public void rotateY(float angle, boolean local)
+	public void rotateY(double angle, boolean local)
 	{
 		applyMatrix(Matrix.makeRotationY(angle), local);
 	}
 
-	public void rotateZ(float angle, boolean local)
+	public void rotateZ(double angle, boolean local)
 	{
 		applyMatrix(Matrix.makeRotationZ(angle), local);
 	}
 
-	public void scale(float s, boolean local)
+	public void scale(double s, boolean local)
 	{
 		applyMatrix(Matrix.makeScale(s), local);
 	}

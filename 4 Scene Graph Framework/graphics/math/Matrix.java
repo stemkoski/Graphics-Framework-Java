@@ -3,7 +3,7 @@ package graphics.math;
 public class Matrix
 {
     public int rows, cols;
-    public float[][] values;
+    public double[][] values;
     public float[] flatValues;
 
     // constructor
@@ -11,7 +11,7 @@ public class Matrix
     {  
         this.rows = rows;
         this.cols = cols;
-        this.values = new float[rows][cols];
+        this.values = new double[rows][cols];
         this.flatValues = new float[rows*cols];
     }
 
@@ -44,13 +44,13 @@ public class Matrix
         {
             int row = i / cols;
             int col = i % cols;
-            values[row][col] = (float)v[i];
+            values[row][col] = v[i];
         }
     }
 
     public Vector getRow(int i)
     {
-        float[] row = new float[cols];
+        double[] row = new double[cols];
         for (int j = 0; j < cols; j++)
             row[j] = values[i][j];
         return new Vector(row);
@@ -58,7 +58,7 @@ public class Matrix
 
     public Vector getCol(int j)
     {
-        float[] col = new float[rows];
+        double[] col = new double[rows];
         for (int i = 0; i < rows; i++)
             col[i] = values[i][j];
         return new Vector(col);
@@ -108,7 +108,7 @@ public class Matrix
     }
 
     // inverse related methods; require square matrix
-    public float determinant() 
+    public double determinant() 
     {
         // if (rows != cols)
         //     throw new Exception();
@@ -120,9 +120,9 @@ public class Matrix
 
         // for larger matrices, calculate determinant 
         //   using cofactor expansion along first row
-        float det = 0;
+        double det = 0;
         for (int colNum = 0; colNum < cols; colNum++)
-            det += (float)Math.pow(-1, colNum) * values[0][colNum] * minor(0, colNum).determinant();
+            det += Math.pow(-1, colNum) * values[0][colNum] * minor(0, colNum).determinant();
         return det;
     }
 
@@ -164,7 +164,7 @@ public class Matrix
         return m;
     }
 
-    public void multiplyScalar(float s)
+    public void multiplyScalar(double s)
     {
         for (int rowNum = 0; rowNum < rows; rowNum++)
             for (int colNum = 0; colNum < cols; colNum++)
@@ -190,7 +190,7 @@ public class Matrix
                 inv.values[rowNum][colNum] = (float)Math.pow(-1, rowNum + colNum)
                     * this.minor(rowNum, colNum).determinant();
 
-        float det = determinant();
+        double det = determinant();
         inv = inv.transpose();
         inv.multiplyScalar( 1.0f/det );
         return inv;
@@ -239,7 +239,7 @@ public class Matrix
         return m;
     }
 
-    public static Matrix makeScale(float s)
+    public static Matrix makeScale(double s)
     {
         Matrix m = new Matrix(4,4);
         m.setValues(s,0,0,0, 0,s,0,0, 0,0,s,0, 0,0,0,1);
