@@ -7,3 +7,6 @@
 
 # BlueJ files
 *.ctxt
+
+# Mac desktop files
+.DS_Store
