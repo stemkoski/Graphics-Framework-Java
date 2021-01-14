@@ -13,7 +13,7 @@ public class Camera extends Object3D
 		projectionMatrix = Matrix.makePerspective();
 	}
 
-	public Camera(float angleOfView, float aspectRatio, float near, float far)
+	public Camera(double angleOfView, double aspectRatio, double near, double far)
 	{
 		viewMatrix = Matrix.makeIdentity();
 		projectionMatrix = Matrix.makePerspective(angleOfView, aspectRatio, near, far);
