@@ -28,8 +28,16 @@ public class Renderer
 
 	public void render(Scene scene, Camera camera)
 	{
-		// clear color and depth buffers
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		render(scene, camera, true, true);
+	}
+
+	public void render(Scene scene, Camera camera, boolean clearColor, boolean clearDepth)
+	{
+		// clear color and/or depth buffers
+		if (clearColor)
+			glClear(GL_COLOR_BUFFER_BIT);
+		if (clearDepth)
+			glClear(GL_DEPTH_BUFFER_BIT);
 
 		// update camera view (calculate inverse)
 		camera.updateViewMatrix();

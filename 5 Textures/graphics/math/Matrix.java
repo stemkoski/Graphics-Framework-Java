@@ -257,6 +257,22 @@ public class Matrix
         return makePerspective(60, 1, 0.1, 1000);
     }
 
+    public static Matrix makeOrthographic(double left, double right,
+        double bottom, double top, double near, double far)
+    {
+        Matrix m = new Matrix(4,4);
+        m.setValues(2/(right-left), 0, 0, -(right+left)/(right-left),
+                    0, 2/(top-bottom), 0, -(top+bottom)/(top-bottom),
+                    0, 0, -2/(far-near), -(far+near)/(far-near),
+                    0, 0, 0, 1);
+        return m;
+    }
+
+    public static Matrix makeOrthographic()
+    {
+        return makeOrthographic(-1,1, -1,1, -1,1);
+    }
+
     public static Matrix makeLookAt(Vector position, Vector target)
     {
         Vector worldUp = new Vector(0, 1, 0);

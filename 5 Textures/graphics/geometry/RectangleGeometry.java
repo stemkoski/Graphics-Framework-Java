@@ -8,15 +8,25 @@ public class RectangleGeometry extends Geometry
 {
 	public RectangleGeometry()
 	{
-		this(1,1);
+		this(1, 1);
 	}
 
 	public RectangleGeometry(double width, double height)
 	{
-		Vector P0 = new Vector(-width/2, -height/2, 0);
-		Vector P1 = new Vector( width/2, -height/2, 0);
-		Vector P2 = new Vector(-width/2,  height/2, 0);
-		Vector P3 = new Vector( width/2,  height/2, 0);
+		this( width, height, new Vector(0,0), new Vector(0.5,0.5) );
+	}
+
+	public RectangleGeometry(double width, double height, Vector position, Vector alignment)
+	{
+		double x = position.values[0];
+		double y = position.values[1];
+		double a = alignment.values[0];
+		double b = alignment.values[1];
+
+		Vector P0 = new Vector(x +  (-a)*width, y +  (-b)*height, 0);
+		Vector P1 = new Vector(x + (1-a)*width, y +  (-b)*height, 0);
+		Vector P2 = new Vector(x +  (-a)*width, y + (1-b)*height, 0);
+		Vector P3 = new Vector(x + (1-a)*width, y + (1-b)*height, 0);
 
 		Vector C0 = new Vector(1 ,1, 1);
 		Vector C1 = new Vector(1, 0, 0);
