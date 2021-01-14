@@ -39,12 +39,63 @@ public class Vector
         return s;
     }
 
+    public void multiplyScalar(double s)
+    {
+        for (int i = 0; i < values.length; i++)
+            values[i] *= s;
+    }
+
+    public static Vector multiplyScalar(double s, Vector v)
+    {
+        Vector n = new Vector( v.values.length ); 
+        for (int i = 0; i < v.values.length; i++)
+            n.values[i] = s * v.values[i];
+        return n;
+    }
+
+    public double getLength()
+    {
+        double length = 0;
+        for (int i = 0; i < values.length; i++)
+            length += values[i] * values[i];
+        return Math.sqrt(length);
+    }
+
+    public void setLength(double length)
+    {
+        multiplyScalar( length / getLength() );
+    }
+
+    public static Vector add(Vector v, Vector w)
+    {
+        Vector n = new Vector( v.values.length );
+        for (int i = 0; i < v.values.length; i++)
+            n.values[i] = v.values[i] + w.values[i];
+        return n;
+    }
+
+    public static Vector subtract(Vector v, Vector w)
+    {
+        Vector n = new Vector( v.values.length );
+        for (int i = 0; i < v.values.length; i++)
+            n.values[i] = v.values[i] - w.values[i];
+        return n;
+    }
+
     public static double dot(Vector v, Vector w)
     {
 		double c = 0;
         for (int i = 0; i < v.values.length; i++)
             c += v.values[i] * w.values[i];
         return c;
+    }
+
+    public static Vector cross(Vector v, Vector w)
+    {
+        return new Vector(
+            v.values[1] * w.values[2] - v.values[2] * w.values[1],
+            v.values[2] * w.values[0] - v.values[0] * w.values[2],
+            v.values[0] * w.values[1] - v.values[1] * w.values[0]  );
     }
 
     // used by geometry/attribute classes, so must set floats

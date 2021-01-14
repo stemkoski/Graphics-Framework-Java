@@ -121,4 +121,10 @@ public class Object3D
 		transform.values[2][3] = position.values[2];
 	}
 
+	public void lookAt(Vector targetPosition)
+	{
+		transform = Matrix.makeLookAt( 
+			this.getWorldPosition(), targetPosition );
+	}
+
 }

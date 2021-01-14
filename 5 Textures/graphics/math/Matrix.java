@@ -54,6 +54,20 @@ public class Matrix
         return col;
     }
 
+    public void setRow(int rowNum, Vector row)
+    {
+        int max = Math.min(this.cols, row.values.length);
+        for (int colNum = 0; colNum < max; colNum++)
+            this.values[rowNum][colNum] = row.values[rowNum];
+    }
+
+    public void setCol(int colNum, Vector col)
+    {
+        int max = Math.min(this.rows, col.values.length);
+        for (int rowNum = 0; rowNum < max; rowNum++)
+            this.values[rowNum][colNum] = col.values[rowNum];
+    }
+
     public Vector multiplyVector(Vector vec)
     {
         Vector result = new Vector( vec.values.length );
@@ -243,4 +257,43 @@ public class Matrix
         return makePerspective(60, 1, 0.1, 1000);
     }
 
+    public static Matrix makeLookAt(Vector position, Vector target)
+    {
+        Vector worldUp = new Vector(0, 1, 0);
+        Vector forward = Vector.subtract( target, position );
+        Vector right = Vector.cross( forward, worldUp );
+
+        // if forward and worldUp vectors are parallel, right vector is zero;
+        // fix by perturbing worldUp vector a bit
+        if (right.getLength() < 0.001)
+        {
+            Vector offset = new Vector(0.001, 0, 0);
+            right = Vector.cross( forward, Vector.add(worldUp, offset) );
+        }
+
+        Vector up = Vector.cross( right, forward );
+        // all vectors should have length 1
+        forward.setLength(1);
+        right.setLength(1);
+        up.setLength(1);
+        
+        // the vectors are shorter than the matrix dimensions,
+        //  and thus the last matrix entry remains as default (0)
+        // only needs to be adjusted in last matrix column.
+        Matrix m = new Matrix(4,4);
+        m.setCol(0, right);
+        m.setCol(1, up);
+        forward.multiplyScalar(-1);
+        m.setCol(2, forward );
+        m.setCol(3, position );
+        m.values[3][3] = 1;
+        return m;
+
+        /*
+        [[ right[0], up[0], -forward[0], position[0]],
+         [ right[1], up[1], -forward[1], position[1]],
+         [ right[2], up[2], -forward[2], position[2]],
+         [  0, 0, 0, 1]]
+        */
+     }
 }
