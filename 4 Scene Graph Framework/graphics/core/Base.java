@@ -31,17 +31,10 @@ public abstract class Base
     private long previousTime;
     private long currentTime;
 
-    // constructors
-    public Base(int windowWidth, int windowHeight)
-    {
-        this.windowWidth  = windowWidth;
-        this.windowHeight = windowHeight;
-    }
-
-    // initialize with default size
+    // constructor
     public Base()
     {
-        this(1024, 1024);
+        
     }
 
     public void startup()
@@ -57,6 +50,9 @@ public abstract class Base
             throw new RuntimeException("Unable to initialize GLFW");
 
         // create window and associated OpenGL context (context stores framebuffer and other state information)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
         window = glfwCreateWindow(
             windowWidth, windowHeight,
@@ -96,6 +92,14 @@ public abstract class Base
 
     public void run()
     {
+        run(1024, 1024);
+    }
+
+    public void run(int windowWidth, int windowHeight)
+    {
+        this.windowWidth  = windowWidth;
+        this.windowHeight = windowHeight;
+
         // startup ----------------------
         startup();
         // application-specific startup code
