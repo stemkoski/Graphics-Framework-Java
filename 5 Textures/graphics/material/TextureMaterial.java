@@ -12,7 +12,7 @@ public class TextureMaterial extends Material
 			"graphics/material/TextureMaterial.frag"  );
 		
 		addUniform("vec3", "baseColor", new Vector(1,1,1) );
-		addUniform("sampler2D", "texture", new Vector(texture.textureRef, 1));
+		addUniform("sampler2D", "tex", new Vector(texture.textureRef, 1));
 		addUniform("vec2", "repeatUV", new Vector(1,1) );
 		addUniform("vec2", "offsetUV", new Vector(0,0) );
 		locateUniforms();
