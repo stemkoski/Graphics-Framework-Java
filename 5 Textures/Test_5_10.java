@@ -54,8 +54,10 @@ public class Test_5_10 extends Base
     public void update()
     {
         rig.update(input, deltaTime);
+        renderer.clearColorBuffer = true;
         renderer.render(scene, camera);
-        renderer.render(hudScene, hudCamera, false, true );
+        renderer.clearColorBuffer = false;
+        renderer.render(hudScene, hudCamera);
     }
 
     // driver method
