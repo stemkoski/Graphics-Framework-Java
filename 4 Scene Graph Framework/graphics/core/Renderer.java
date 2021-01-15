@@ -9,6 +9,8 @@ public class Renderer
 {
 	public Renderer()
 	{
+		glClearColor(0, 0, 0, 1);
+		
 		glEnable( GL_DEPTH_TEST );
 		
 		// required for antialiasing

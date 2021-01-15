@@ -13,6 +13,8 @@ public class Renderer
 
 	public Renderer()
 	{
+		glClearColor(0, 0, 0, 1);
+		
 		// support depth testing
 		glEnable( GL_DEPTH_TEST );
 
