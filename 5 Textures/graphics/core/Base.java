@@ -14,8 +14,8 @@ import static org.lwjgl.opengl.GL40.*;
 public abstract class Base
 {
     // window dimensions
-    private int windowWidth;
-    private int windowHeight;
+    public static int windowWidth;
+    public static int windowHeight;
     // the window handle
     private long window;
     // is the main loop currently active?

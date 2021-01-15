@@ -9,6 +9,7 @@ public class Renderer
 {
 	public boolean clearColorBuffer;
 	public boolean clearDepthBuffer;
+	public RenderTarget renderTarget;
 
 	public Renderer()
 	{
@@ -24,6 +25,7 @@ public class Renderer
 
 		clearColorBuffer = true;
 		clearDepthBuffer = true;
+		renderTarget = null; // default to window
 	}
 
 	public void setClearColor( Vector color )
@@ -35,6 +37,20 @@ public class Renderer
 	
 	public void render(Scene scene, Camera camera)
 	{
+		// activate render target
+		if (renderTarget == null)
+		{
+			// set render target to window
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glViewport(0,0, Base.windowWidth, Base.windowHeight); // TODO: set correctly...
+		}
+		else
+		{
+			// set render target properties
+			glBindFramebuffer(GL_FRAMEBUFFER, renderTarget.framebufferRef);
+			glViewport(0,0, renderTarget.width, renderTarget.height);
+		}
+
 		// clear color and/or depth buffers
 		if (clearColorBuffer)
 			glClear(GL_COLOR_BUFFER_BIT);
