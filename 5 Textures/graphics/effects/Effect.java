@@ -3,9 +3,9 @@ package graphics.effects;
 import graphics.material.Material;
 import graphics.math.Vector;
 
-public class TemplateEffect extends Material
+public class Effect extends Material
 {
-	public TemplateEffect()
+	public Effect()
 	{
 		super(
 			"graphics/effects/Effect.vert",
