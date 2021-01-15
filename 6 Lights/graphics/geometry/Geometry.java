@@ -48,10 +48,43 @@ public class Geometry
 			// add to new data list
 			newPositionList.add( newPos );
 		}
+
 		float[] newPositionData = Vector.flattenList(newPositionList);
 		attributes.get("vertexPosition").dataArray = newPositionData;
 		// new data must be uploaded
 		attributes.get("vertexPosition").uploadData();
+
+
+		// extract the rotation submatrix
+		Matrix rotationMatrix = matrix.minor(3,3);
+
+		// update vertex normal data
+		float[] oldVertexNormalData = attributes.get("vertexNormal").dataArray;
+		List<Vector> oldVertexNormalList 
+			= Vector.unflattenList(oldVertexNormalData, 3);
+		List<Vector> newVertexNormalList = new ArrayList<Vector>();
+		for (Vector oldNormal : oldVertexNormaList)
+		{
+			Vector newNormal = matrix.multiplyVector(oldNormal);
+			newVertexNormalList.add( newNormal );
+		}
+		float[] newVertexNormalData = Vector.flattenList(newVertexNormalList);
+		attributes.get("vertexNormal").dataArray = newVertexNormalData;
+		attributes.get("vertexNormal").uploadData();
+
+		// update face normal data
+		float[] oldFaceNormalData = attributes.get("faceNormal").dataArray;
+		List<Vector> oldFaceNormalList 
+			= Vector.unflattenList(oldFaceNormalData, 3);
+		List<Vector> newFaceNormalList = new ArrayList<Vector>();
+		for (Vector oldNormal : oldFaceNormalList)
+		{
+			Vector newNormal = matrix.multiplyVector(oldNormal);
+			newFaceNormalList.add( newNormal );
+		}
+		float[] newFaceNormalData = Vector.flattenList(newFaceNormalList);
+		attributes.get("faceNormal").dataArray = newFaceNormalData;
+		attributes.get("faceNormal").uploadData();
 	}
 
 	// merge data from attributes of other geometry into this object;
