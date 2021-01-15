@@ -1,5 +1,7 @@
 package graphics.light;
 
+import graphics.math.Vector;
+
 public class PointLight extends Light
 {
 	public PointLight(Vector color, Vector position, Vector attenuation)

@@ -102,9 +102,9 @@ public class Uniform<T>
 		else if (dataType.equals("Light"))
 		{
 			Light L = (Light)data;
-			glUniform1i( variableRefMap.get("lightType"), L.lightType );
+			glUniform1i( variableRefMap.get("lightType"), (int)L.lightType );
 	
-			Vector col = L.getDirection();
+			Vector col = L.color;
 			glUniform3f( variableRefMap.get("color"),
 				(float)col.values[0], (float)col.values[1], (float)col.values[2] );
 	

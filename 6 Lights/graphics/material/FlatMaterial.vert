@@ -23,6 +23,7 @@ vec3 lightCalc(Light light, vec3 pointPosition, vec3 pointNormal)
 	float specular = 0;
 	float attenuation = 1;
 	vec3 lightDirection = vec3(0,0,0);
+
 	if ( light.lightType == 1 ) // ambient light
 	{
 		ambient = 1;
@@ -36,9 +37,14 @@ vec3 lightCalc(Light light, vec3 pointPosition, vec3 pointNormal)
 		lightDirection = normalize(pointPosition - light.position);
 		float distance = length(light.position - pointPosition);
 		attenuation = 1.0 / (light.attenuation[0] +
-		light.attenuation[1] * distance +
-		light.attenuation[2] * distance * distance);
+							 light.attenuation[1] * distance +
+						  	 light.attenuation[2] * distance * distance);
 	}
+	else
+	{
+
+	}
+
 	if ( light.lightType > 1 ) // directional or point light
 	{
 		pointNormal = normalize(pointNormal);

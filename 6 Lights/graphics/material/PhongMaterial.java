@@ -26,8 +26,8 @@ public class PhongMaterial extends Material
 		}
 
 		addUniform("vec3", "viewPosition", new Vector(0,0,0) );
-		addUniform("float", "specularStrength", 1);
-		addUniform("float", "shininess", 32);
+		addUniform("float", "specularStrength", 1f);
+		addUniform("float", "shininess", 32f);
 
 		locateUniforms();
 

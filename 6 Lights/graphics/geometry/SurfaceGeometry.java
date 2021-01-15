@@ -24,6 +24,9 @@ public class SurfaceGeometry extends Geometry
 			new Vector(1,0,0), new Vector(0,1,0), new Vector(0,0,1),
 			new Vector(0,1,1), new Vector(1,0,1), new Vector(1,1,0) );
 
+		Vector[][] vertexNormals = surface.getNormals(
+			uStart, uEnd, uResolution, vStart, vEnd, vResolution);
+
 		ArrayList<Vector> positionList     = new ArrayList<Vector>();
 		ArrayList<Vector> colorList        = new ArrayList<Vector>();
 		ArrayList<Vector> uvList           = new ArrayList<Vector>();
@@ -52,10 +55,10 @@ public class SurfaceGeometry extends Geometry
 				uvList.addAll( Arrays.asList(uvA,uvB,uvC, uvA,uvC,uvD) );
 
 				// vertex normal vectors
-				Vector nA = vertexNormals[xIndex+0][yIndex+0];
-				Vector nB = vertexNormals[xIndex+1][yIndex+0];
-				Vector nD = vertexNormals[xIndex+0][yIndex+1];
-				Vector nC = vertexNormals[xIndex+1][yIndex+1];
+				Vector nA = vertexNormals[uIndex+0][vIndex+0];
+				Vector nB = vertexNormals[uIndex+1][vIndex+0];
+				Vector nD = vertexNormals[uIndex+0][vIndex+1];
+				Vector nC = vertexNormals[uIndex+1][vIndex+1];
 				vertexNormalList.addAll( Arrays.asList(nA,nB,nC, nA,nC,nD) );
 
 				// face normal vectors

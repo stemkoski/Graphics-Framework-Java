@@ -67,7 +67,9 @@ public class Surface
     {
 
         Vector[][] normals = new Vector[uResolution+1][vResolution+1];
-        
+        double deltaU = (uEnd - uStart) / uResolution;
+        double deltaV = (vEnd - vStart) / vResolution;
+
         for (int uIndex = 0; uIndex < uResolution+1; uIndex++)
         {
             for (int vIndex = 0; vIndex < vResolution+1; vIndex++)
@@ -75,9 +77,9 @@ public class Surface
                 double u = uStart + uIndex * deltaU;
                 double v = vStart + vIndex * deltaV;
                 double h = 0.0001;
-                Vector P0 = function(u, v);
-                Vector P1 = function(u+h, v);
-                Vector P2 = function(u, v+h);
+                Vector P0 = function.apply(u, v);
+                Vector P1 = function.apply(u+h, v);
+                Vector P2 = function.apply(u, v+h);
                 normals[uIndex][vIndex] = Vector.calcNormal(P0, P1, P2);
             }
         }
