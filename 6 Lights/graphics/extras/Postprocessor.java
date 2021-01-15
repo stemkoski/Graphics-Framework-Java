@@ -31,7 +31,7 @@ public class Postprocessor
 		renderTargetList = new ArrayList<RenderTarget>();
 		renderTargetList.add( finalRenderTarget );
 
-		// this.finalRenderTarget = finalRenderTarget; // not needed yet
+		this.finalRenderTarget = finalRenderTarget; // not needed yet
 		
 		orthoCamera = new Camera();
 		orthoCamera.setOrthographic(-1,1, -1,1, 1,-1); // aligned with clip space by default
@@ -63,7 +63,7 @@ public class Postprocessor
 	public void addEffect(Material effect)
 	{
 		Scene postScene = new Scene();
-		Vector resolution = new Vector(800,600); // Base.windowWidth, Base.windowHeight);
+		Vector resolution = new Vector(Base.windowWidth, Base.windowHeight);
 		RenderTarget target = new RenderTarget( resolution );
 
 		// change the previous entry in the render target list
@@ -78,7 +78,7 @@ public class Postprocessor
 
 		sceneList.add( postScene );
 		cameraList.add( orthoCamera );
-		renderTargetList.add( null );
+		renderTargetList.add( finalRenderTarget );
 	}
 
 	public void render()

@@ -31,7 +31,7 @@ public class Postprocessor
 		renderTargetList = new ArrayList<RenderTarget>();
 		renderTargetList.add( finalRenderTarget );
 
-		// this.finalRenderTarget = finalRenderTarget; // not needed yet
+		this.finalRenderTarget = finalRenderTarget;
 		
 		orthoCamera = new Camera();
 		orthoCamera.setOrthographic(-1,1, -1,1, 1,-1); // aligned with clip space by default
@@ -78,7 +78,7 @@ public class Postprocessor
 
 		sceneList.add( postScene );
 		cameraList.add( orthoCamera );
-		renderTargetList.add( null );
+		renderTargetList.add( finalRenderTarget );
 	}
 
 	public void render()
