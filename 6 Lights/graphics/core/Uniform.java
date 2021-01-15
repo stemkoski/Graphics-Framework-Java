@@ -2,13 +2,15 @@ package graphics.core;
 
 import static org.lwjgl.opengl.GL40.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import graphics.math.Vector;
 import graphics.math.Matrix;
+import graphics.light.Light;
 
 public class Uniform<T>
 {
 	// GLSL types
-    // int | bool | float | vec2 | vec3 | vec4 | mat4
+    // int | bool | float | vec2 | vec3 | vec4 | mat4 | Light
     // Java types
     // Integer | Float | Vector | Matrix
     private String dataType;
@@ -19,8 +21,10 @@ public class Uniform<T>
 	// store results of generating buffers
     private int[] resultArray = new int[1];
 
-	// reference for variable location in program
+	// reference for single variable location in program
 	private int variableRef;
+	// reference for multiple variable locations in program
+	private HashMap<String, Integer> variableRefMap;
 
 	public Uniform(String dataType, T data)
 	{
@@ -28,10 +32,26 @@ public class Uniform<T>
         this.data = data;
 	}
 
-	// get and store reference for program variable with given name
+	// get and store reference(s) for program variable with given name
 	public void locateVariable(int programRef, String variableName)
 	{
-		variableRef = glGetUniformLocation(programRef, variableName);
+
+		if (dataType.equals("Light"))
+		{
+			variableRefMap = new HashMap<String, Integer>();
+			variableRefMap.put("lightType",
+				glGetUniformLocation(programRef, variableName + ".lightType") );
+			variableRefMap.put("color",
+				glGetUniformLocation(programRef, variableName + ".color") );
+			variableRefMap.put("direction",
+				glGetUniformLocation(programRef, variableName + ".direction") );
+			variableRefMap.put("position",
+				glGetUniformLocation(programRef, variableName + ".position") );
+			variableRefMap.put("attenuation",
+				glGetUniformLocation(programRef, variableName + ".attenuation") );
+		}
+		else
+			variableRef = glGetUniformLocation(programRef, variableName);
 	}
 
 	// store data in uniform variable previously located
@@ -78,6 +98,27 @@ public class Uniform<T>
 			glBindTexture( GL_TEXTURE_2D, textureObjectRef );
 			// upload texture unit number (0...15) to uniform variable in shader
 			glUniform1i( variableRef, textureUnitRef );
+		}
+		else if (dataType.equals("Light"))
+		{
+			Light L = (Light)data;
+			glUniform1i( variableRefMap.get("lightType"), L.lightType );
+	
+			Vector col = L.getDirection();
+			glUniform3f( variableRefMap.get("color"),
+				(float)col.values[0], (float)col.values[1], (float)col.values[2] );
+	
+			Vector dir = L.getDirection();
+			glUniform3f( variableRefMap.get("direction"),
+				(float)dir.values[0], (float)dir.values[1], (float)dir.values[2] );
+	
+			Vector pos = L.getPosition();
+			glUniform3f( variableRefMap.get("position"),
+				(float)pos.values[0], (float)pos.values[1], (float)pos.values[2] );
+	
+			Vector att = L.attenuation;
+			glUniform3f( variableRefMap.get("attenuation"), 
+				(float)att.values[0], (float)att.values[1], (float)att.values[2] );
 		}
 		else
 			System.out.println("Unknown uniform type: " + dataType);
