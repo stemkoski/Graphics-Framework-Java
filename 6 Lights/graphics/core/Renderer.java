@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL40.*;
 import java.util.List;
 import java.util.ArrayList;
 import graphics.math.Vector;
+import graphics.light.Light;
 
 public class Renderer
 {
@@ -62,15 +63,19 @@ public class Renderer
 
 		// extract list of all Mesh objects in scene
 		List<Object3D> descendentList = scene.getDescendentList();
+		
 		ArrayList<Mesh> meshList = new ArrayList<Mesh>();
-
 		for (Object3D obj : descendentList)
 			if (obj instanceof Mesh)
 				meshList.add( (Mesh)obj );
 
-
-		// meshFilter = lambda x : isinstance(x, Mesh)
-		/// meshList = list( filter( meshFilter, descendentList ) )
+		ArrayList<Light> lightList = new ArrayList<Light>();
+		for (Object3D obj : descendentList)
+			if (obj instanceof Light)
+				lightList.add( (Light)obj );
+		// scenes support 4 lights; precisely 4 must be present
+		while ( lightList.size() < 4 )
+			lightList.add( new Light() );
 
 		for (Mesh mesh : meshList)
 		{
@@ -88,6 +93,20 @@ public class Renderer
 			mesh.material.uniforms.get("modelMatrix").data = mesh.getWorldMatrix();
 			mesh.material.uniforms.get("viewMatrix").data = camera.viewMatrix;
 			mesh.material.uniforms.get("projectionMatrix").data = camera.projectionMatrix;
+
+			// if material uses light data, add lights from list
+			if ( mesh.material.uniforms.containsKey("light0") )
+			{
+				for (int lightNumber = 0; lightNumber < 4; lightNumber++)
+				{
+					String lightName = "light" + lightNumber;
+					Light lightObject = lightList.get(lightNumber);
+					mesh.material.uniforms.get(lightName).data = lightObject;
+				}
+			}
+			// add camera position if needed (specular lighting)
+			if ( mesh.material.uniforms.containsKey("viewPosition") )
+				mesh.material.uniforms.get("viewPosition").data = camera.getWorldPosition();
 			
 			// update uniforms stored in material
 			for (Uniform uniform : mesh.material.uniforms.values())
