@@ -60,10 +60,9 @@ public class Geometry
 
 		// update vertex normal data
 		float[] oldVertexNormalData = attributes.get("vertexNormal").dataArray;
-		List<Vector> oldVertexNormalList 
-			= Vector.unflattenList(oldVertexNormalData, 3);
+		List<Vector> oldVertexNormalList = Vector.unflattenList(oldVertexNormalData, 3);
 		List<Vector> newVertexNormalList = new ArrayList<Vector>();
-		for (Vector oldNormal : oldVertexNormaList)
+		for (Vector oldNormal : oldVertexNormalList)
 		{
 			Vector newNormal = matrix.multiplyVector(oldNormal);
 			newVertexNormalList.add( newNormal );
@@ -74,8 +73,7 @@ public class Geometry
 
 		// update face normal data
 		float[] oldFaceNormalData = attributes.get("faceNormal").dataArray;
-		List<Vector> oldFaceNormalList 
-			= Vector.unflattenList(oldFaceNormalData, 3);
+		List<Vector> oldFaceNormalList = Vector.unflattenList(oldFaceNormalData, 3);
 		List<Vector> newFaceNormalList = new ArrayList<Vector>();
 		for (Vector oldNormal : oldFaceNormalList)
 		{
