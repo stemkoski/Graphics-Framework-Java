@@ -62,7 +62,11 @@ vec3 lightCalc(Light light, vec3 pointPosition, vec3 pointNormal)
 
 uniform vec3 baseColor;
 uniform bool useTexture;
-uniform sampler2D texture;
+uniform sampler2D tex;
+
+uniform bool useBumpTexture;
+uniform sampler2D bumpTexture;
+uniform float bumpStrength;
 
 in vec3 position;
 in vec2 UV;
@@ -75,14 +79,18 @@ void main()
 	vec4 color = vec4(baseColor, 1.0);
 
 	if ( useTexture )
-		color *= texture2D( texture, UV );
+		color *= texture( tex, UV );
 	
 	// calculate total effect of lights on color
+	vec3 bNormal = normal;
+	if (useBumpTexture)
+		bNormal += bumpStrength * vec3(texture( bumpTexture, UV ));
+
 	vec3 total = vec3(0,0,0);
-	total += lightCalc( light0, position, normal );
-	total += lightCalc( light1, position, normal );
-	total += lightCalc( light2, position, normal );
-	total += lightCalc( light3, position, normal );
+	total += lightCalc( light0, position, bNormal );
+	total += lightCalc( light1, position, bNormal );
+	total += lightCalc( light2, position, bNormal );
+	total += lightCalc( light3, position, bNormal );
 	color *= vec4( total, 1 );
 	
 	fragColor = color;

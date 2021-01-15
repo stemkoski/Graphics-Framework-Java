@@ -26,13 +26,24 @@ public class PhongMaterial extends Material
 		}
 
 		addUniform("vec3", "viewPosition", new Vector(0,0,0) );
-		addUniform("float", "specularStrength", 1f);
-		addUniform("float", "shininess", 32f);
+		addUniform("float", "specularStrength", 1.0f);
+		addUniform("float", "shininess", 32.0f);
+
+		addUniform("bool", "useBumpTexture", 0);
+		addUniform("sampler2D", "bumpTexture", new Vector(-1, 2));
+		addUniform("float", "bumpStrength", 1.0f);
 
 		locateUniforms();
 
 		addRenderSetting( "doubleSide", true );
 		addRenderSetting( "wireframe", false );
 		addRenderSetting( "lineWidth", 1 );
+	}
+
+	public void addBumpData(Texture bumpTexture, float bumpStrength)
+	{
+		addUniform("bool", "useBumpTexture", 1);
+		addUniform("sampler2D", "bumpTexture", new Vector(bumpTexture.textureRef, 2));
+		addUniform("float", "bumpStrength", bumpStrength);
 	}
 }

@@ -25,10 +25,21 @@ public class LambertMaterial extends Material
 			addUniform("sampler2D", "tex", new Vector(texture.textureRef, 1));
 		}
 
+		addUniform("bool", "useBumpTexture", 0);
+		addUniform("sampler2D", "bumpTexture", new Vector(-1, 2));
+		addUniform("float", "bumpStrength", 1.0f);
+
 		locateUniforms();
 
 		addRenderSetting( "doubleSide", true );
 		addRenderSetting( "wireframe", false );
 		addRenderSetting( "lineWidth", 1 );
+	}
+
+	public void addBumpData(Texture bumpTexture, float bumpStrength)
+	{
+		uniforms.get("useBumpTexture").data = 1;
+		uniforms.get("bumpTexture").data = new Vector(bumpTexture.textureRef, 2);
+		uniforms.get("bumpStrength").data = bumpStrength;
 	}
 }
