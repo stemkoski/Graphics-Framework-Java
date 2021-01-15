@@ -24,9 +24,12 @@ public class SurfaceGeometry extends Geometry
 			new Vector(1,0,0), new Vector(0,1,0), new Vector(0,0,1),
 			new Vector(0,1,1), new Vector(1,0,1), new Vector(1,1,0) );
 
-		ArrayList<Vector> positionList = new ArrayList<Vector>();
-		ArrayList<Vector> colorList    = new ArrayList<Vector>();
-		ArrayList<Vector> uvList       = new ArrayList<Vector>();
+		ArrayList<Vector> positionList     = new ArrayList<Vector>();
+		ArrayList<Vector> colorList        = new ArrayList<Vector>();
+		ArrayList<Vector> uvList           = new ArrayList<Vector>();
+		ArrayList<Vector> vertexNormalList = new ArrayList<Vector>();
+		ArrayList<Vector> faceNormalList   = new ArrayList<Vector>();
+
 
 		for (int uIndex=0; uIndex<uResolution; uIndex++)
 		{
@@ -47,16 +50,33 @@ public class SurfaceGeometry extends Geometry
 				Vector uvD = uvs[uIndex+0][vIndex+1];
 				Vector uvC = uvs[uIndex+1][vIndex+1];
 				uvList.addAll( Arrays.asList(uvA,uvB,uvC, uvA,uvC,uvD) );
+
+				// vertex normal vectors
+				Vector nA = vertexNormals[xIndex+0][yIndex+0];
+				Vector nB = vertexNormals[xIndex+1][yIndex+0];
+				Vector nD = vertexNormals[xIndex+0][yIndex+1];
+				Vector nC = vertexNormals[xIndex+1][yIndex+1];
+				vertexNormalList.addAll( Arrays.asList(nA,nB,nC, nA,nC,nD) );
+
+				// face normal vectors
+				Vector fn0 = Vector.calcNormal(pA, pB, pC);
+				Vector fn1 = Vector.calcNormal(pA, pC, pD);
+				faceNormalList.addAll( Arrays.asList(fn0,fn0,fn0, fn1,fn1,fn1) );
             }
 		}
 
 		float[] positionData = Vector.flattenList(positionList);
 		float[] colorData = Vector.flattenList(colorList);
 		float[] uvData = Vector.flattenList(uvList);
+		float[] vertexNormalData = Vector.flattenList(vertexNormalList);
+		float[] faceNormalData = Vector.flattenList(faceNormalList);
 		
 		addAttribute("vec3", "vertexPosition", positionData);
         addAttribute("vec3", "vertexColor", colorData);
         addAttribute("vec2", "vertexUV", uvData);
+        addAttribute("vec3", "vertexNormal", vertexNormalData);
+		addAttribute("vec3", "faceNormal", faceNormalData);
+
 		vertexCount = uResolution * vResolution * 6;
 	}
 }

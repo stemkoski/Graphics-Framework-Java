@@ -39,6 +39,9 @@ public class RectangleGeometry extends Geometry
 		Vector T2 = new Vector(0,1);
 		Vector T3 = new Vector(1,1);
 
+		// normal vector
+		Vector N0 = new Vector(0,0,1);
+
 		List positionList = Arrays.asList(P0,P1,P3, P0,P3,P2);
 		float[] positionData = Vector.flattenList(positionList);
 
@@ -48,10 +51,15 @@ public class RectangleGeometry extends Geometry
 		List uvList = Arrays.asList(T0,T1,T3, T0,T3,T2);
 		float[] uvData = Vector.flattenList(uvList);
 
+		List normalList = Arrays.asList(N0,N0,N0, N0,N0,N0);
+		float[] normalData = Vector.flattenList(normalList);
+
 		addAttribute("vec3", "vertexPosition", positionData);
         addAttribute("vec3", "vertexColor", colorData);
 		addAttribute("vec2", "vertexUV", uvData);
-		
+		addAttribute("vec3", "vertexNormal", normalData);
+		addAttribute("vec3", "faceNormal", normalData);
+
 		vertexCount = 6;
 	}
 

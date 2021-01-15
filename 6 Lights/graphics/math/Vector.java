@@ -126,4 +126,13 @@ public class Vector
         }
         return vecList;
     }
+
+    public static Vector calcNormal(Vector P0, Vector P1, Vector P2)
+    {
+        Vector v1 = Vector.subtract(P1, P0);
+        Vector v2 = Vector.subtract(P2, P0);
+        Vector normal = Vector.cross(v1, v2);  
+        normal.setLength(1);
+        return normal; 
+    }
 }

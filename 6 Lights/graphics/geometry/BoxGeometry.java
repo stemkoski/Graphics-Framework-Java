@@ -37,6 +37,14 @@ public class BoxGeometry extends Geometry
 		Vector T2 = new Vector(0,1);
 		Vector T3 = new Vector(1,1);
 
+		// normal vectors for x+, x-, y+, y-, z+, z-
+		Vector N1 = new Vector( 1,  0,  0);
+		Vector N2 = new Vector(-1,  0,  0);
+		Vector N3 = new Vector( 0,  1,  0);
+		Vector N4 = new Vector( 0, -1,  0);
+		Vector N5 = new Vector( 0,  0,  1);
+		Vector N6 = new Vector( 0,  0, -1);
+
 		List positionList = Arrays.asList(
 			P5,P1,P3,P5,P3,P7, P0,P4,P6,P0,P6,P2,
 			P6,P7,P3,P6,P3,P2, P0,P1,P5,P0,P5,P4,
@@ -55,9 +63,18 @@ public class BoxGeometry extends Geometry
 			T0,T1,T3,T0,T3,T2, T0,T1,T3,T0,T3,T2  );
 		float[] uvData = Vector.flattenList(uvList);
 
+		List normalList = Arrays.asList(
+			N1,N1,N1,N1,N1,N1, N2,N2,N2,N2,N2,N2,
+			N3,N3,N3,N3,N3,N3, N4,N4,N4,N4,N4,N4,
+			N5,N5,N5,N5,N5,N5, N6,N6,N6,N6,N6,N6  );
+		float[] normalData = Vector.flattenList(normalList);
+
 		addAttribute("vec3", "vertexPosition", positionData);
         addAttribute("vec3", "vertexColor", colorData);
         addAttribute("vec2", "vertexUV", uvData);
+        addAttribute("vec3", "vertexNormal", normalData);
+		addAttribute("vec3", "faceNormal", normalData);
+
 		vertexCount = 36;
 	}
 
