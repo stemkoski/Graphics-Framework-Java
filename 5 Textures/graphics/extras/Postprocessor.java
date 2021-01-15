@@ -55,7 +55,7 @@ public class Postprocessor
 		List uvList = Arrays.asList(T0,T1,T3, T0,T3,T2);
 		float[] uvData = Vector.flattenList(uvList);
 
-		rectangleGeom.addAttribute("vec3", "vertexPosition", positionData);
+		rectangleGeom.addAttribute("vec2", "vertexPosition", positionData);
 		rectangleGeom.addAttribute("vec2", "vertexUV", uvData);
 		rectangleGeom.vertexCount = 6;
 	}

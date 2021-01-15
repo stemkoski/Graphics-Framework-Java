@@ -6,5 +6,4 @@ void main()
 {
 	vec4 color = texture(tex, UV);
 	fragColor = color;
-	fragColor = vec4(1,0,0,1);
 }

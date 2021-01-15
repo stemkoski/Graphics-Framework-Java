@@ -47,8 +47,8 @@ public class Test_5_12 extends Base
 
         // set up postprocessing
         postprocessor = new Postprocessor(renderer, scene, camera, null);
-        postprocessor.addEffect( new TemplateEffect() );
-        // postprocessor.addEffect( new TintEffect( new Vector(1,0,0) ) );
+        // postprocessor.addEffect( new TemplateEffect() );
+        postprocessor.addEffect( new TintEffect( new Vector(1,0,0) ) );
 
     }
 
