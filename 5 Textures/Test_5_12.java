@@ -14,6 +14,7 @@ public class Test_5_12 extends Base
     public Camera camera;
     public MovementRig rig;
 
+    public Mesh sphere;
     public Postprocessor postprocessor;
 
     public void initialize()
@@ -41,14 +42,23 @@ public class Test_5_12 extends Base
 
         Geometry sphereGeometry = new SphereGeometry();
         Material sphereMaterial = new TextureMaterial( new Texture("images/grid.png") );
-        Mesh sphere = new Mesh( sphereGeometry, sphereMaterial );
+        sphere = new Mesh( sphereGeometry, sphereMaterial );
         sphere.setPosition( new Vector(0,1,0) );
         scene.add( sphere );
 
         // set up postprocessing
         postprocessor = new Postprocessor(renderer, scene, camera, null);
         // postprocessor.addEffect( new TemplateEffect() );
-        postprocessor.addEffect( new TintEffect( new Vector(1,0,0) ) );
+        // postprocessor.addEffect( new TintEffect( new Vector(1,0,0) ) );
+        // postprocessor.addEffect( new InvertEffect() );
+        // postprocessor.addEffect( new PixelateEffect(8, new Vector(800,600)) );
+        // postprocessor.addEffect( new VignetteEffect(0.4f, 1.0f, new Vector(0,0,0)) );
+        // postprocessor.addEffect( new ColorReduceEffect(3) );
+
+        // retro handheld video game system effect
+        postprocessor.addEffect( new TintEffect(new Vector(0,1,0)) );
+        postprocessor.addEffect( new ColorReduceEffect(5) );
+        postprocessor.addEffect( new PixelateEffect(8, new Vector(800,600)) );
 
     }
 
@@ -56,6 +66,7 @@ public class Test_5_12 extends Base
     {
         rig.update(input, deltaTime);
         
+        sphere.rotateY( 0.01337, true );
         // renderer.render(scene, camera);
         postprocessor.render();
     }

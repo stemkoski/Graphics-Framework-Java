@@ -51,7 +51,7 @@ public class Texture
 
 		magFilter = GL_LINEAR;
 		minFilter = GL_LINEAR;
-		wrap = GL_REPEAT;
+		wrap = GL_CLAMP_TO_EDGE;
 
 		uploadData();
 	}
