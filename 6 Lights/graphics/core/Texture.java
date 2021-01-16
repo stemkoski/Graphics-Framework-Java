@@ -44,16 +44,21 @@ public class Texture
 	}
 
 	// generate an empty texture - used by RenderTarget class
-	public Texture(int width, int height)
+	public Texture(int width, int height, int magFilter, int minFilter, int wrap)
 	{
 		this.width = width;
 		this.height = height;
 
-		magFilter = GL_LINEAR;
-		minFilter = GL_LINEAR;
-		wrap = GL_CLAMP_TO_EDGE;
+		this.magFilter = magFilter;
+		this.minFilter = minFilter;
+		this.wrap = wrap;
 
 		uploadData();
+	}
+
+	public Texture(int width, int height)
+	{
+		this(width, height, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 	}
 
 	// upload pixel data to GPU

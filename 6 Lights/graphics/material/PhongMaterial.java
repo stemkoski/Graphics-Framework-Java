@@ -33,6 +33,9 @@ public class PhongMaterial extends Material
 		addUniform("sampler2D", "bumpTexture", new Vector(-1, 2));
 		addUniform("float", "bumpStrength", 1.0f);
 
+		addUniform("bool", "useShadow", 0);
+		addUniform("Shadow", "shadow0", null);
+
 		locateUniforms();
 
 		addRenderSetting( "doubleSide", true );

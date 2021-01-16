@@ -4,16 +4,21 @@ import static org.lwjgl.opengl.GL40.*;
 import java.util.List;
 import java.util.ArrayList;
 import graphics.math.Vector;
-import graphics.light.Light;
+import graphics.light.*;
 
 public class Renderer
 {
+	public Vector clearColor;
 	public boolean clearColorBuffer;
 	public boolean clearDepthBuffer;
 	public RenderTarget renderTarget;
 
+	public boolean shadowsEnabled;
+	public Shadow shadowObject;
+
 	public Renderer()
 	{
+		// default clear color black
 		glClearColor(0, 0, 0, 1);
 
 		// support depth testing
@@ -29,17 +34,92 @@ public class Renderer
 		clearColorBuffer = true;
 		clearDepthBuffer = true;
 		renderTarget = null; // default to window
+
+		shadowsEnabled = false;
+		shadowObject = null;
 	}
 
-	public void setClearColor( Vector color )
+	public void setClearColor( Vector clearColor )
 	{
-		glClearColor(
-			(float)color.values[0], (float)color.values[1], (float)color.values[2], 1);
+		this.clearColor = clearColor;
 	}
 
-	
+	public void enableShadows(DirectionalLight shadowLight, float strength, Vector resolution, float bias)
+	{
+		shadowsEnabled = true;
+		shadowObject = new Shadow(shadowLight, strength, resolution, bias);
+	}
+
+	public void enableShadows(DirectionalLight shadowLight)
+	{
+		enableShadows(shadowLight, 0.5f, new Vector(512,512), 0.01f);
+	}
+
 	public void render(Scene scene, Camera camera)
 	{
+		// extract list of all Mesh objects in scene
+		List<Object3D> descendentList = scene.getDescendentList();
+		
+		// extract list of all Mesh objects in scene
+		ArrayList<Mesh> meshList = new ArrayList<Mesh>();
+		for (Object3D obj : descendentList)
+			if (obj instanceof Mesh)
+				meshList.add( (Mesh)obj );
+
+		// shadow pass start ----------------------------
+
+		if (shadowsEnabled)
+		{
+			// set render target properties
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowObject.renderTarget.framebufferRef);
+			glViewport(0,0, shadowObject.renderTarget.width, shadowObject.renderTarget.height);
+
+			// set default color to white,
+			//   used when no objects present to cast shadows
+			glClearColor(1,1,1,1);
+
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			// reset original clear color
+			glClearColor((float)clearColor.values[0], (float)clearColor.values[1], 
+					     (float)clearColor.values[2], (float)clearColor.values[3]);
+
+			// everything in the scene gets rendered with depthMaterial
+			//   so only need to call glUseProgram & set matrices once
+			glUseProgram( shadowObject.material.programRef );
+			
+			shadowObject.updateInternal();
+			
+			for (Mesh mesh : meshList)
+			{
+				// skip invisible meshes
+				if (!mesh.visible)
+					continue;
+				
+				// only triangle-based meshes cast shadows
+				if (mesh.material.drawStyle != GL_TRIANGLES)
+					continue;
+
+				// bind VAO
+				glBindVertexArray( mesh.vaoRef );
+				
+				// update transform data
+				shadowObject.material.uniforms.get("modelMatrix").data = mesh.getWorldMatrix();
+				
+				// update uniforms (matrix data) stored in shadow material
+				for (Uniform uniform : shadowObject.material.uniforms.values())
+					uniform.uploadData();
+
+				// no render settings to update
+
+				glDrawArrays( GL_TRIANGLES, 0, mesh.geometry.vertexCount );
+			}
+		}
+
+		// shadow pass end ----------------------------
+
+
 		// activate render target
 		if (renderTarget == null)
 		{
@@ -54,6 +134,8 @@ public class Renderer
 			glViewport(0,0, renderTarget.width, renderTarget.height);
 		}
 
+
+
 		// clear color and/or depth buffers
 		if (clearColorBuffer)
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -63,14 +145,7 @@ public class Renderer
 		// update camera view (calculate inverse)
 		camera.updateViewMatrix();
 
-		// extract list of all Mesh objects in scene
-		List<Object3D> descendentList = scene.getDescendentList();
-		
-		ArrayList<Mesh> meshList = new ArrayList<Mesh>();
-		for (Object3D obj : descendentList)
-			if (obj instanceof Mesh)
-				meshList.add( (Mesh)obj );
-
+		// extract list of all Light objects in scene
 		ArrayList<Light> lightList = new ArrayList<Light>();
 		for (Object3D obj : descendentList)
 			if (obj instanceof Light)
@@ -110,6 +185,10 @@ public class Renderer
 			if ( mesh.material.uniforms.containsKey("viewPosition") )
 				mesh.material.uniforms.get("viewPosition").data = camera.getWorldPosition();
 			
+			// add shadow data if enabled and used by shader
+			if ( shadowsEnabled &&  mesh.material.uniforms.containsKey("shadow0") )
+				mesh.material.uniforms.get("shadow0").data = shadowObject;
+
 			// update uniforms stored in material
 			for (Uniform uniform : mesh.material.uniforms.values())
 				uniform.uploadData();

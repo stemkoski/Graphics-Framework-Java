@@ -13,15 +13,13 @@ public class RenderTarget
 
 	public int framebufferRef;
 
-	public RenderTarget(Vector resolution)
+	public RenderTarget(Vector resolution, int magFilter, int minFilter, int wrap)
 	{
-		// this.resolution = resolution;
-
 		width = (int)resolution.values[0];
 		height = (int)resolution.values[1];
 
 		// generate an empty texture
-		texture = new Texture(width, height);
+		texture = new Texture(width, height, magFilter, minFilter, wrap);
 
 		// create a framebuffer
 		framebufferRef = glGenFramebuffers();
@@ -42,6 +40,11 @@ public class RenderTarget
 		int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (status != GL_FRAMEBUFFER_COMPLETE)
 			System.out.println("Framebuffer status error: " + status);
+	}
+
+	public RenderTarget(Vector resolution)
+	{
+		this(resolution, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
 	}
 
 }

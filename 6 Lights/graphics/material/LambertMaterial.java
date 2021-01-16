@@ -29,6 +29,9 @@ public class LambertMaterial extends Material
 		addUniform("sampler2D", "bumpTexture", new Vector(-1, 2));
 		addUniform("float", "bumpStrength", 1.0f);
 
+		addUniform("bool", "useShadow", 0);
+		addUniform("Shadow", "shadow0", null);
+
 		locateUniforms();
 
 		addRenderSetting( "doubleSide", true );
@@ -42,4 +45,5 @@ public class LambertMaterial extends Material
 		uniforms.get("bumpTexture").data = new Vector(bumpTexture.textureRef, 2);
 		uniforms.get("bumpStrength").data = bumpStrength;
 	}
+
 }
