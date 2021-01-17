@@ -41,6 +41,7 @@ public class Test_7_1 extends Base
 
         BitmapFont bmfont = new BitmapFont("assets/arial.fnt", "assets/arial.png");
         textMesh = new TextMesh("Hello!", bmfont);
+        textMesh.scale(0.5, true);
         scene.add( textMesh );
     }
 
