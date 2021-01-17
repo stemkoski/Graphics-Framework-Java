@@ -6,6 +6,8 @@ import graphics.geometry.*;
 import graphics.material.*;
 import graphics.extras.*;
 import graphics.light.*;
+import graphics.font.*;
+
 
 public class Test_Template extends Base
 {
