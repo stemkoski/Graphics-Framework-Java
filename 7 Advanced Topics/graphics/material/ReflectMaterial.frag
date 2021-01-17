@@ -1,7 +1,7 @@
 uniform vec3 baseColor;
 
 uniform samplerCube cubeTex;
-uniform float reflectAmount;
+uniform float colorPercent;
 uniform vec3 viewPosition;
 
 in vec3 position;
@@ -18,5 +18,5 @@ void main()
 	vec3 I = normalize(position - viewPosition);
 	vec3 R = reflect(I, normalize(normal));
 
-	fragColor = (1 - reflectAmount) * color + reflectAmount * texture(cubeTex, R);
+	fragColor = colorPercent * color + (1 - colorPercent) * texture(cubeTex, R);
 }

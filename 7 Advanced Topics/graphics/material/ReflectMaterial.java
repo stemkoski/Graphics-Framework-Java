@@ -6,7 +6,7 @@ import graphics.core.CubeTexture;
 
 public class ReflectMaterial extends Material
 {
-	public ReflectMaterial(CubeTexture cubeTex, float reflectAmount)
+	public ReflectMaterial(CubeTexture cubeTex, float colorPercent)
 	{
 		super(
 			"graphics/material/ReflectMaterial.vert",
@@ -14,7 +14,7 @@ public class ReflectMaterial extends Material
 		
 		addUniform("vec3", "baseColor", new Vector(1,1,1) );
 		addUniform("samplerCube", "cubeTex", new Vector(cubeTex.textureRef, 1));
-		addUniform("float", "reflectAmount", reflectAmount);
+		addUniform("float", "colorPercent", colorPercent);
 		addUniform("vec3", "viewPosition", new Vector(0,0,0) );
 
 		locateUniforms();

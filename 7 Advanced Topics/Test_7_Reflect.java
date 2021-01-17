@@ -47,7 +47,7 @@ public class Test_7_Reflect extends Base
         scene.add(sky);
 
         // torus to reflect
-        ReflectMaterial reflectMat = new ReflectMaterial( skyTex, 0.8f );
+        ReflectMaterial reflectMat = new ReflectMaterial( skyTex, 0.2f );
         reflectMat.uniforms.get("baseColor").data = new Vector(0,0,1);
         mesh = new Mesh(
             new TorusGeometry(),
