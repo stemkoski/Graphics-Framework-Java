@@ -1,0 +1,8 @@
+newmtl tree_mat
+Ka 0 0 0
+Kd 0.972549 0.972549 0.972549
+d 1
+Tr 1
+map_Ka tree_mat.png
+map_Kd tree_mat.png
+map_d tree_mat.png
