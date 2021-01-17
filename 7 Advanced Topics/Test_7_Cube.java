@@ -14,7 +14,7 @@ public class Test_7_Cube extends Base
     public Renderer renderer;
     public Scene scene;
     public Camera camera;
-    public Mesh mesh;
+    public Mesh box;
     public MovementRig rig;
 
     public void initialize()
@@ -37,11 +37,9 @@ public class Test_7_Cube extends Base
             "images/cube/zpos.png", "images/cube/zneg.png"
         };
         CubeTexture cubeTex = new CubeTexture(fileNames);
-
-        Mesh box = new Mesh(
-            new BoxGeometry(),
-            new CubeMaterial(cubeTex)
-        );
+        CubeMaterial cubeMat = new CubeMaterial(cubeTex);
+        cubeMat.uniforms.get("baseColor").data = new Vector(0.8,0.8,1);
+        box = new Mesh( new BoxGeometry(), cubeMat );
         scene.add(box);
 
         String[] fileNames2 = new String[] {
@@ -71,6 +69,8 @@ public class Test_7_Cube extends Base
     {
         rig.update(input, deltaTime);
         renderer.render(scene, camera);
+
+        box.rotateY(0.005, true);
 
         if (input.isKeyDown(GLFW_KEY_F))
             System.out.println( "FPS: " + Math.floor(1 / deltaTime) );

@@ -4,10 +4,10 @@ uniform mat4 modelMatrix;
 
 in vec3 vertexPosition;
 
-out vec3 position;
+out vec3 cubeTexCoord;
 
 void main()
 {
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix *	vec4(vertexPosition, 1.0);
-	position = vertexPosition;
+	cubeTexCoord = vertexPosition;
 }

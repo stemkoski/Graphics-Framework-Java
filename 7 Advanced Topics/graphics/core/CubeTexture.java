@@ -27,15 +27,9 @@ public class CubeTexture
 		minFilter = GL_LINEAR;
 		wrap = GL_CLAMP_TO_EDGE;
 
-		
         /*
         // prevents inverted images
 		stbi_set_flip_vertically_on_load(true);
-		// last argument as 4 -> generates RGBA formatted buffer
-		pixelData = stbi_load(fileName, widthBuf, heightBuf, compBuf, 4);
-
-		width = widthBuf.get();
-		height = heightBuf.get();
 		*/
 
 		// uploadData();
@@ -46,7 +40,6 @@ public class CubeTexture
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureRef);
 
 		// send pixel data (ByteBuffer) to texture buffer
-
 		for(int i = 0; i < 6; i++)
 		{
 			IntBuffer widthBuf  = BufferUtils.createIntBuffer(1);
