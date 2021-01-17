@@ -116,6 +116,18 @@ public class Uniform<T>
 			// upload texture unit number (0...15) to uniform variable in shader
 			glUniform1i( variableRef, textureUnitRef );
 		}
+		else if (dataType.equals("samplerCube"))
+		{
+			Vector v = (Vector)data;
+			int textureObjectRef = (int)v.values[0];
+			int textureUnitRef   = (int)v.values[1];
+			// activate texture unit
+			glActiveTexture( GL_TEXTURE0 + textureUnitRef );
+			// associate texture object reference to currently active texture unit
+			glBindTexture( GL_TEXTURE_CUBE_MAP, textureObjectRef );
+			// upload texture unit number (0...15) to uniform variable in shader
+			glUniform1i( variableRef, textureUnitRef );
+		}
 		else if (dataType.equals("Light"))
 		{
 			Light L = (Light)data;

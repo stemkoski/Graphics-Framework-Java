@@ -42,6 +42,9 @@ public class Renderer
 	public void setClearColor( Vector clearColor )
 	{
 		this.clearColor = clearColor;
+
+		glClearColor((float)clearColor.values[0], (float)clearColor.values[1], 
+				     (float)clearColor.values[2], (float)clearColor.values[3]);
 	}
 
 	public void enableShadows(DirectionalLight shadowLight, float strength, Vector resolution, float bias)
