@@ -184,7 +184,7 @@ public class Renderer
 					mesh.material.uniforms.get(lightName).data = lightObject;
 				}
 			}
-			// add camera position if needed (specular lighting)
+			// add camera position if needed (specular lighting & reflections)
 			if ( mesh.material.uniforms.containsKey("viewPosition") )
 				mesh.material.uniforms.get("viewPosition").data = camera.getWorldPosition();
 			
