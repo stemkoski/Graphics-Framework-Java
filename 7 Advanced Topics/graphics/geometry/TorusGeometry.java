@@ -17,6 +17,6 @@ public class TorusGeometry extends SurfaceGeometry
 
 	public TorusGeometry()
 	{
-		this(0.60, 0.40, 24, 12, 1);
+		this(0.60, 0.40, 48, 24, 1);
 	}
 }
