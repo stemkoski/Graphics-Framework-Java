@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-public class VertexNormalHelper extends Mesh
+public class VertexNormalGeometry extends Geometry
 {
-	public VertexNormalHelper(Mesh mesh, double size, Vector color, int lineWidth )
+	public VertexNormalGeometry(Mesh mesh, double size, Vector color, int lineWidth )
 	{
 
 		ArrayList<Vector> positionList  	 = new ArrayList<Vector>();
@@ -25,8 +25,8 @@ public class VertexNormalHelper extends Mesh
         {
         	//System.out.println(vertexPositions[i]);
 
-           positionList.add( vertexPositions[i] );
-           positionList.add( vertexPositions[i] + vertexNormals[i] * size);
+           positionList.add( new Vector(vertexPositions[i]) );
+           positionList.add( new Vector(vertexPositions[i] + vertexNormals[i] * size));
         }
 
         for(int i = 0; i < vertexNormals.length * 2; i++)
@@ -37,9 +37,10 @@ public class VertexNormalHelper extends Mesh
 		float[] positionData = Vector.flattenList(positionList);
 		float[] colorData = Vector.flattenList(colorList);
 
-		Geometry geo = new Geometry();
-		geo.addAttribute("vec3", "vertexPosition", positionData);
-        geo.addAttribute("vec3", "vertexColor", colorData);
+		
+		addAttribute("vec3", "vertexPosition", positionData);
+        addAttribute("vec3", "vertexColor", colorData);
 		 
-		geo.merge(mesh.geometry);
+		this.merge(mesh.geometry);
 	}
+}

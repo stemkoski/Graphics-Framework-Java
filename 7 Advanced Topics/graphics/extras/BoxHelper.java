@@ -19,9 +19,11 @@ public class BoxHelper extends Mesh
 
         this.material.uniforms.get("useVertexColors").data = 1;
         this.material.renderSettings.get("lineWidth").data = lineWidth;
+        this.geometry.merge(mesh.geometry);
     }
 
     public BoxHelper(Mesh mesh)
     {
         this(mesh, new Vector(-1, -1, -1), new Vector(1, 1, 1), new Vector(0, 0, 0.5), 1 );
     }
+}

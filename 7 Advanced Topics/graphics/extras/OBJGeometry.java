@@ -15,9 +15,9 @@ public class OBJGeometry extends Geometry
 	{
 		super();
 
-		List<Vector> pts  				 = new ArrayList<Vector>();
-		List<Vector> uvs    	 		 = new ArrayList<Vector>();
-		List<Vector> norms    			 = new ArrayList<Vector>();
+		List<String> pts  				 = new ArrayList<String>();
+		List<String> uvs    	 		 = new ArrayList<String>();
+		List<String> norms    			 = new ArrayList<String>();
 
 		List<Vector> vertexPositionList  = new ArrayList<Vector>();
 		List<Vector> vertexUVList    	 = new ArrayList<Vector>();
@@ -43,26 +43,34 @@ public class OBJGeometry extends Geometry
         	{
         		String[] d = line.split(" ");
 
-        		if (d[0] == "v")
-                	  pts.addAll(Arrays.asList(d[1], d[2], d[3]));
-            	if (d[0] == "vt")
-                	  uvs.addAll(Arrays.asList(d[1], d[2]));
-            	if (d[0] == "vn")
-                	norms.addAll(Arrays.asList(d[1], d[2], d[3]));
+        		if (d[0] == "v"){
+                	  pts.add(d[1]);
+                      pts.add(d[2]);
+                      pts.add(d[3]);
+                    }
+            	if (d[0] == "vt"){
+                	  uvs.add(d[1]);
+                      uvs.add(d[2]);
+                    }
+            	if (d[0] == "vn"){
+                      norms.add(d[1]);
+                      norms.add(d[2]);
+                      norms.add(d[3]);
+                    }
             	if (d[0] == "f") 
             	{
             		for (int i = 1; i < 4; i++)
             		{
-            			String[] triangles = d[i];
+            			String triangles = d[i];
             			String[] faces = triangles.split("/");
 
-            			pts 	= vertexPositionList.get(faces[0]-1);
-            			uvs 	= 		vertexUVList.get(faces[1]-1);
-            			norms 	=   vertexNormalList.get(faces[2]-1);
+            			pts 	= vertexPositionList.get((int)faces[0]-1);
+            			uvs 	= 		vertexUVList.get((int)faces[1]-1);
+            			norms 	=   vertexNormalList.get((int)faces[2]-1);
 
-            			vertexPositionList.add( new Vector(   pts[0],   pts[1],   pts[2] ) );
-                    		  vertexUVList.add( new Vector(   uvs[0],   uvs[1]           ) );
-                    	  vertexNormalData.add( new Vector( norms[0], norms[1], norms[2] ) );
+            			vertexPositionList.add( new Vector(   pts.get(0),    pts.get(1),   pts.get(2) ) );
+                    		  vertexUVList.add( new Vector(   uvs.get(0),    uvs.get(0)               ) );
+                    	  vertexNormalData.add( new Vector( norms.get(0),  norms.get(1), norms.get(2) ) );
                     }
             	}
         	}

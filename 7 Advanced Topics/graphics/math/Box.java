@@ -3,20 +3,21 @@ package graphics.math;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import graphics.geometry.Geometry;
+import graphics.core.Mesh;
 
 public class Box extends Geometry
 {
     public Box(Mesh mesh, Vector min, Vector max, Vector color, double lineWidth)
     {
-        Geometry geo = new Geometry();
+        
+        double xMin = min.values[0];
+        double yMin = min.values[1];
+        double zMin = min.values[2];
 
-        double xMin = min[0];
-        double yMin = min[1];
-        double zMin = min[2];
-
-        double xMax = max[0];
-        double yMax = max[1];
-        double zMax = max[2];
+        double xMax = max.values[0];
+        double yMax = max.values[1];
+        double zMax = max.values[2];
 
         Vector C1 = color;
 
@@ -42,10 +43,10 @@ public class Box extends Geometry
         float[] positionData = Vector.flattenList(positionList);
         float[] colorData = Vector.flattenList(colorList);
 
-        geo.addAttribute("vec3", "vertexPosition", positionData);
-        geo.addAttribute("vec3", "vertexColor", colorData);
+        addAttribute("vec3", "vertexPosition", positionData);
+        addAttribute("vec3", "vertexColor", colorData);
         vertexCount = 36;
-        
-        geo.merge(mesh.geometry);
+
+        this.merge(mesh.geometry);
     }
 }
