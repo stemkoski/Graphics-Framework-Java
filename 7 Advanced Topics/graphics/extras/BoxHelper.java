@@ -11,19 +11,19 @@ import java.util.ArrayList;
 
 public class BoxHelper extends Mesh
 {
-    public BoxHelper(Mesh mesh, Vector min, Vector max, Vector color, double lineWidth )
+    public BoxHelper(Vector min, Vector max, Vector color, double lineWidth )
     {
 
-        super( new Box(mesh, min, max, color, lineWidth), 
+        super( new Box(min, max, color, lineWidth), 
                new LineMaterial() );
 
         this.material.uniforms.get("useVertexColors").data = 1;
         this.material.renderSettings.get("lineWidth").data = lineWidth;
-        this.geometry.merge(mesh.geometry);
+
     }
 
-    public BoxHelper(Mesh mesh)
+    public BoxHelper()
     {
-        this(mesh, new Vector(-1, -1, -1), new Vector(1, 1, 1), new Vector(0, 0, 0.5), 1 );
+        this( new Vector(-1, -1, -1), new Vector(1, 1, 1), new Vector(0, 0, 0.5), 1 );
     }
 }

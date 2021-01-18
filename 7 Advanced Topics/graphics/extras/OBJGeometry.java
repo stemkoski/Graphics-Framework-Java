@@ -64,13 +64,20 @@ public class OBJGeometry extends Geometry
             			String triangles = d[i];
             			String[] faces = triangles.split("/");
 
-            			pts 	= vertexPositionList.get((int)faces[0]-1);
-            			uvs 	= 		vertexUVList.get((int)faces[1]-1);
-            			norms 	=   vertexNormalList.get((int)faces[2]-1);
+            			pts 	= vertexPositionList.get(Integer.parseInt(faces[0])-1);
+            			uvs 	= 		vertexUVList.get(Integer.parseInt(faces[1])-1);
+            			norms 	=   vertexNormalList.get(Integer.parseInt(faces[2])-1);
 
-            			vertexPositionList.add( new Vector(   pts.get(0),    pts.get(1),   pts.get(2) ) );
-                    		  vertexUVList.add( new Vector(   uvs.get(0),    uvs.get(0)               ) );
-                    	  vertexNormalData.add( new Vector( norms.get(0),  norms.get(1), norms.get(2) ) );
+            			vertexPositionList.add( new Vector(   Double.parseDouble(pts.get(0)),   
+                                                              Double.parseDouble(pts.get(1)),   
+                                                              Double.parseDouble(pts.get(2)) ) );
+
+                    		  vertexUVList.add( new Vector(   Double.parseDouble(uvs.get(0)),   
+                                                              Double.parseDouble(uvs.get(1)) ) );
+
+                    	  vertexNormalList.add( new Vector(   Double.parseDouble(norms.get(0)), 
+                                                              Double.parseDouble(norms.get(1)), 
+                                                              Double.parseDouble(norms.get(2)) ) );
                     }
             	}
         	}

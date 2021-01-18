@@ -8,7 +8,7 @@ import graphics.core.Mesh;
 
 public class Box extends Geometry
 {
-    public Box(Mesh mesh, Vector min, Vector max, Vector color, double lineWidth)
+    public Box(Vector min, Vector max, Vector color, double lineWidth)
     {
         
         double xMin = min.values[0];
@@ -47,6 +47,5 @@ public class Box extends Geometry
         addAttribute("vec3", "vertexColor", colorData);
         vertexCount = 36;
 
-        this.merge(mesh.geometry);
     }
 }

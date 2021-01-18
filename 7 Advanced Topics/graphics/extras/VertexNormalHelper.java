@@ -17,6 +17,7 @@ public class VertexNormalHelper extends Mesh
 			   new LineMaterial() );
 		this.material.uniforms.get("useVertexColors").data = 1;
 		this.material.renderSettings.get("lineWidth").data = lineWidth;
+		this.geometry.merge(mesh.geometry);
 	}
 
 	public VertexNormalHelper(Mesh mesh)

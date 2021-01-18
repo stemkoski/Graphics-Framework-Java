@@ -40,7 +40,6 @@ public class VertexNormalGeometry extends Geometry
 		
 		addAttribute("vec3", "vertexPosition", positionData);
         addAttribute("vec3", "vertexColor", colorData);
-		 
-		this.merge(mesh.geometry);
+
 	}
 }
