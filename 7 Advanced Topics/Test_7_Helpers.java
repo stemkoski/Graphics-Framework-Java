@@ -8,7 +8,6 @@ import graphics.extras.*;
 import graphics.light.*;
 import graphics.font.*;
 
-
 public class Test_7_Helpers extends Base
 {
     public Renderer renderer;
@@ -24,7 +23,6 @@ public class Test_7_Helpers extends Base
         scene    = new Scene();
         camera   = new Camera();
         camera.setPerspective(60, 4/3f, 0.01, 1000);
-        // camera.setPosition( new Vector(0.5, 1, 4) );
 
         rig = new MovementRig();
         rig.attach( camera );
