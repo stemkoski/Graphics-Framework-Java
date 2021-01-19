@@ -9,7 +9,7 @@ import graphics.light.*;
 import graphics.font.*;
 
 // this and the font directory will eventually move to Chapter 7
-public class Test_7_1 extends Base
+public class Test_7_Font extends Base
 {
     public Renderer renderer;
     public Scene scene;
@@ -60,7 +60,7 @@ public class Test_7_1 extends Base
     // driver method
     public static void main(String[] args)
     {
-        new Test_7_1().run();
+        new Test_7_Font().run();
     }
 
 }
