@@ -40,14 +40,14 @@ public class Test_6_5 extends Base
         dirLight.add( directHelper );
 
         Geometry sphereGeometry = new SphereGeometry();
-        LambertMaterial phongMaterial = new LambertMaterial( new Texture("images/grid.png") );
-        phongMaterial.uniforms.get("useShadow").data = 1;
+        LambertMaterial shadowMaterial = new LambertMaterial( new Texture("images/grid.png") );
+        shadowMaterial.enableShadow();
 
-        Mesh sphere1 = new Mesh(sphereGeometry, phongMaterial);
+        Mesh sphere1 = new Mesh(sphereGeometry, shadowMaterial);
         sphere1.setPosition( new Vector(-2, 1, 0) );
         scene.add( sphere1 );
 
-        Mesh sphere2 = new Mesh(sphereGeometry, phongMaterial);
+        Mesh sphere2 = new Mesh(sphereGeometry, shadowMaterial);
         sphere2.setPosition( new Vector(1, 2.2, -0.5) );
         scene.add( sphere2 );
 
@@ -64,7 +64,7 @@ public class Test_6_5 extends Base
         scene.add( shadowDisplay );
         */
 
-        Mesh floor = new Mesh( new RectangleGeometry(20, 20), phongMaterial );
+        Mesh floor = new Mesh( new RectangleGeometry(20, 20), shadowMaterial );
         floor.rotateX(-3.14/2, true);
         scene.add(floor);
     }

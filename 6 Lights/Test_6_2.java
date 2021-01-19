@@ -18,7 +18,7 @@ public class Test_6_2 extends Base
     public void initialize()
     {
         renderer = new Renderer();
-        renderer.setClearColor(new Vector(0.2,0.2,0.2));
+        renderer.setClearColor(new Vector(0.2,0.2,0.2, 1));
 
         scene    = new Scene();
         camera   = new Camera();

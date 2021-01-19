@@ -17,24 +17,18 @@ public class PhongMaterial extends Material
 		addUniform("Light", "light2", null );
 		addUniform("Light", "light3", null );
 		
-		if (texture == null)
-			addUniform("bool", "useTexture", 0);
-		else
-		{
-			addUniform("bool", "useTexture", 1);
-			addUniform("sampler2D", "tex", new Vector(texture.textureRef, 1));
-		}
-
 		addUniform("vec3", "viewPosition", new Vector(0,0,0) );
 		addUniform("float", "specularStrength", 1.0f);
 		addUniform("float", "shininess", 32.0f);
 
+		addUniform("bool", "useTexture", 0);
+
+		if (texture != null)
+			addTextureData(texture);
+
 		addUniform("bool", "useBumpTexture", 0);
-		addUniform("sampler2D", "bumpTexture", new Vector(-1, 2));
-		addUniform("float", "bumpStrength", 1.0f);
 
 		addUniform("bool", "useShadow", 0);
-		addUniform("Shadow", "shadow0", null);
 
 		locateUniforms();
 
@@ -43,10 +37,26 @@ public class PhongMaterial extends Material
 		addRenderSetting( "lineWidth", 1 );
 	}
 
+	public void addTextureData(Texture texture)
+	{
+		uniforms.get("useTexture").data = 1;
+		addUniform("sampler2D", "tex", new Vector(texture.textureRef, 1));
+		locateUniforms();
+	}
+
 	public void addBumpData(Texture bumpTexture, float bumpStrength)
 	{
-		addUniform("bool", "useBumpTexture", 1);
+		uniforms.get("useBumpTexture").data = 1;
 		addUniform("sampler2D", "bumpTexture", new Vector(bumpTexture.textureRef, 2));
-		addUniform("float", "bumpStrength", bumpStrength);
+		addUniform("float", "bumpStrength", 1.0f);
+		locateUniforms();
 	}
+
+	public void enableShadow()
+	{
+		uniforms.get("useShadow").data = 1;	
+		addUniform("Shadow", "shadow0", null);
+		locateUniforms();
+	}
+
 }
