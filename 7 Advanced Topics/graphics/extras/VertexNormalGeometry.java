@@ -10,36 +10,43 @@ import java.util.ArrayList;
 
 public class VertexNormalGeometry extends Geometry
 {
-	public VertexNormalGeometry(Mesh mesh, double size, Vector color, int lineWidth )
+	public VertexNormalGeometry( Mesh mesh, double lineLength )
 	{
 
-		ArrayList<Vector> positionList  	 = new ArrayList<Vector>();
-		ArrayList<Vector> colorList   	   	 = new ArrayList<Vector>();
+		ArrayList<Vector> helperPositionList = new ArrayList<Vector>();
+		ArrayList<Vector> helperColorList 	 = new ArrayList<Vector>();
 
-		float[] vertexNormals = mesh.geometry.attributes.get("vertexNormal").dataArray;
-		float[] vertexPositions = mesh.geometry.attributes.get("vertexPosition").dataArray;
+		// dark to light gradient
+		Vector C0 = new Vector(0.1, 0.1, 0.1);
+		Vector C1 = new Vector(1, 1, 1);
 
-		//System.out.println(vertexPositions);
+		float[] vertexPositionData = mesh.geometry.attributes.get("vertexPosition").dataArray;
+		float[] vertexNormalData   = mesh.geometry.attributes.get("vertexNormal").dataArray;
 		
-        for(int i = 0; i < vertexNormals.length; i++)
+		List<Vector> vertexPositionList = Vector.unflattenList( vertexPositionData, 3 );
+		List<Vector> vertexNormalList   = Vector.unflattenList( vertexNormalData, 3 );
+		
+        for( int i = 0; i < vertexNormalList.size(); i++ )
         {
-        	//System.out.println(vertexPositions[i]);
+        	Vector p = vertexPositionList.get(i);
+        	Vector n = vertexNormalList.get(i);
+        	n.setLength(lineLength);
+        	Vector q = Vector.add(p,n);
 
-           positionList.add( new Vector(vertexPositions[i]) );
-           positionList.add( new Vector(vertexPositions[i] + vertexNormals[i] * size));
+			helperPositionList.add( p );
+            helperPositionList.add( q );
+            helperColorList.add( C0 );
+            helperColorList.add( C1 );
         }
 
-        for(int i = 0; i < vertexNormals.length * 2; i++)
-        {
-            colorList.add( color );
-        }
+		float[] positionData = Vector.flattenList(helperPositionList);
+		float[] colorData = Vector.flattenList(helperColorList);
 
-		float[] positionData = Vector.flattenList(positionList);
-		float[] colorData = Vector.flattenList(colorList);
-
-		
 		addAttribute("vec3", "vertexPosition", positionData);
         addAttribute("vec3", "vertexColor", colorData);
 
+        vertexCount = helperPositionList.size();
+
+        System.out.println( vertexCount );
 	}
 }

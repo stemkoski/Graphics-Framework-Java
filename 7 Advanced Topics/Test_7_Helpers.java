@@ -9,7 +9,7 @@ import graphics.light.*;
 import graphics.font.*;
 
 
-public class Test_Helpers extends Base
+public class Test_7_Helpers extends Base
 {
     public Renderer renderer;
     public Scene scene;
@@ -28,24 +28,17 @@ public class Test_Helpers extends Base
 
         rig = new MovementRig();
         rig.attach( camera );
-        rig.setPosition( new Vector(1, 2, 5) );
+        rig.setPosition( new Vector(0, 1, 4) );
         scene.add( rig );
         
-        Mesh mesh = new Mesh(
+        mesh = new Mesh(
             new TorusGeometry(),
             new TextureMaterial( new Texture("images/grid.png"))
         );
-        mesh.rotateX(-3.14/2, true);
-
-        /////////////////////////////////////////////
-        // comment one or the other helper line out
-
-        //Mesh helper = new BoxHelper();
-        Mesh helper = new VertexNormalHelper(mesh);
-
-        mesh.add(helper);
         scene.add(mesh);
-        /////////////////////////////////////////
+
+        Mesh helper = new VertexNormalHelper(mesh);
+        mesh.add(helper);
 
         Mesh grid = new GridHelper();
         grid.rotateX(-3.14/2, true);
@@ -61,6 +54,9 @@ public class Test_Helpers extends Base
         rig.update(input, deltaTime);
         renderer.render(scene, camera);
 
+        mesh.rotateX(0.01337, false);
+        mesh.rotateY(0.02357, false);
+
         if (input.isKeyDown(GLFW_KEY_F))
             System.out.println( "FPS: " + Math.floor(1 / deltaTime) );
     }
@@ -68,7 +64,7 @@ public class Test_Helpers extends Base
     // driver method
     public static void main(String[] args)
     {
-        new Test_7_Shapes().run(1600, 1200);
+        new Test_7_Helpers().run(1600, 1200);
     }
 
 }

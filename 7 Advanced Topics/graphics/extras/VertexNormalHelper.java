@@ -10,19 +10,20 @@ import java.util.ArrayList;
 
 public class VertexNormalHelper extends Mesh
 {
-	public VertexNormalHelper(Mesh mesh, double size, Vector color, int lineWidth )
+	public VertexNormalHelper(Mesh mesh, double lineLength, Vector baseColor, int lineWidth )
 	{
 
-		super( new VertexNormalGeometry(mesh, size, color, lineWidth), 
+		super( new VertexNormalGeometry(mesh, lineLength), 
 			   new LineMaterial() );
+
 		this.material.uniforms.get("useVertexColors").data = 1;
+		this.material.uniforms.get("baseColor").data = baseColor;
 		this.material.renderSettings.get("lineWidth").data = lineWidth;
-		this.geometry.merge(mesh.geometry);
 	}
 
 	public VertexNormalHelper(Mesh mesh)
 	{
-		this(mesh, 0.2, new Vector(1,0,0), 2);
+		this(mesh, 0.2, new Vector(0.5, 0.5, 1), 2);
 	}
 
 }
