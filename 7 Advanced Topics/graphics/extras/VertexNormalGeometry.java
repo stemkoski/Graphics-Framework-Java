@@ -46,7 +46,5 @@ public class VertexNormalGeometry extends Geometry
         addAttribute("vec3", "vertexColor", colorData);
 
         vertexCount = helperPositionList.size();
-
-        System.out.println( vertexCount );
 	}
 }
