@@ -137,8 +137,6 @@ public class Renderer
 			glViewport(0,0, renderTarget.width, renderTarget.height);
 		}
 
-
-
 		// clear color and/or depth buffers
 		if (clearColorBuffer)
 			glClear(GL_COLOR_BUFFER_BIT);
