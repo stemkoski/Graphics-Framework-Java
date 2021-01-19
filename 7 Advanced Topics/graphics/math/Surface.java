@@ -59,7 +59,7 @@ public class Surface
     }
 
     
-
+    
     // calculate normal vectors to surface (vertex normals)
     public Vector[][] getNormals(
         double uStart, double uEnd, int uResolution, 
