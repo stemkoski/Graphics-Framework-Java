@@ -25,13 +25,13 @@ public class CubeCamera extends Object3D
 	public CubeCamera()
 	{
 
-	ArrayList<Vector> cams = [  new Vector( 1, 0, 0),
-								new Vector(-1, 0, 0),
-								new Vector( 0, 1, 0),
-								new Vector( 0,-1, 0),
-								new Vector( 0, 0, 1),
-								new Vector( 0, 0,-1)
-							];
+	ArrayList<Vector> cams = new ArrayList<>(Arrays.asList( new Vector( 1, 0, 0),
+															new Vector(-1, 0, 0),
+															new Vector( 0, 1, 0),
+															new Vector( 0,-1, 0),
+															new Vector( 0, 0, 1),
+															new Vector( 0, 0,-1)));
+							
 		
 
 		for(int i = 0; i < 6; i++){

@@ -7,7 +7,6 @@ import graphics.material.*;
 import graphics.extras.*;
 import graphics.light.*;
 import graphics.font.*;
-import graphics.extras.CubeRenderTarget;
 
 // cube texture test
 public class Test_7_DynamicReflections extends Base
