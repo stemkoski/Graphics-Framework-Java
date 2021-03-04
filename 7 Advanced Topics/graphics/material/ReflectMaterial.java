@@ -2,11 +2,11 @@ package graphics.material;
 
 import graphics.math.Vector;
 import graphics.core.Texture;
-import graphics.core.CubeTexture2;
+import graphics.core.CubeTexture;
 
 public class ReflectMaterial extends Material
 {
-	public ReflectMaterial(CubeTexture2 cubeTex, float colorPercent)
+	public ReflectMaterial(CubeTexture cubeTex, float colorPercent)
 	{
 		super(
 			"graphics/material/ReflectMaterial.vert",

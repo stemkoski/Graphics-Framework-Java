@@ -1,13 +1,13 @@
 package graphics.material;
 
 import static org.lwjgl.opengl.GL40.*;
-import graphics.core.CubeTexture2;
+import graphics.core.CubeTexture;
 import graphics.math.Vector;
 
 // uses vertex position as texture coordinates
 public class CubeMaterial extends Material
 {
-	public CubeMaterial(CubeTexture2 texture)
+	public CubeMaterial(CubeTexture texture)
 	{
 		super(
 			"graphics/material/CubeMaterial.vert",
