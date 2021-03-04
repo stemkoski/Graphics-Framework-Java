@@ -19,7 +19,7 @@ public class CubeTexture
 
 	public int width, height;
 	public String[] fileNames;
-	// public ByteBuffer pixelData;
+	public ByteBuffer pixelData;
 
 	// load texture from file
 	public CubeTexture(String[] fileNames)
@@ -69,11 +69,12 @@ public class CubeTexture
 		// send pixel data (ByteBuffer) to texture buffer
 		for(int i = 0; i < 6; i++)
 		{
-			ByteBuffer emptyArray = BufferUtils.createByteBuffer(10);
+			
 			IntBuffer widthBuf  = BufferUtils.createIntBuffer(1);
 	        IntBuffer heightBuf = BufferUtils.createIntBuffer(1);
 	        IntBuffer compBuf   = BufferUtils.createIntBuffer(1);
-		    ByteBuffer pixelData = stbi_load(fileNames[i], widthBuf, heightBuf, compBuf, 4);
+	        if (this.fileNames != null)
+		    	pixelData = stbi_load(fileNames[i], widthBuf, heightBuf, compBuf, 4);
 		    width = widthBuf.get();
 			height = heightBuf.get();
 			if (pixelData != null)
