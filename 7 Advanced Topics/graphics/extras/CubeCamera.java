@@ -19,31 +19,27 @@ import graphics.geometry.*;
 import graphics.material.*;
 import graphics.extras.*;
 
-public class CubeCamera
+public class CubeCamera extends Object3D
 {
-
-	/*
-	RT 1 = X POS CAMERA 1
-	RT 2 = X NEG CAMERA 2
-	RT 3 = Y POS CAMERA 3
-	RT 4 = X NEG CAMERA 4
-	RT 5 = Z POS CAMERA 5
-	RT 6 = X NEG CAMERA 6
-	*/
-	
-	List<RenderTarget> renderTargets = new ArrayList<RenderTarget>();
-	List<Camera> cameras = new ArrayList<Camera>();
 
 	public CubeCamera()
 	{
+
+	ArrayList<Vectors> cams = { new Vector( 1, 0, 0)
+								new Vector(-1, 0, 0),
+								new Vector( 0, 1, 0),
+								new Vector( 0,-1, 0),
+								new Vector( 0, 0, 1),
+								new vector( 0, 0,-1);
+							}
+		
+
 		for(int i = 0; i < 6; i++){
 
 			Camera c = new Camera().setOrthographic(0,800, 0,600, 1,-1);
-			c.lookAt(new Vector(0, 0, 0));
-			cameras.add( c );
-			RenderTarget r = new RenderTarget( new Vector(800, 600) );
-			renderTargets.add( r ); 
+			c.lookAt(cams.get(i));
 
+			
 		}
 
 	}
