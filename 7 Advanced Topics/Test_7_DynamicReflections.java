@@ -7,6 +7,7 @@ import graphics.material.*;
 import graphics.extras.*;
 import graphics.light.*;
 import graphics.font.*;
+import graphics.extras.CubeRenderTarget;
 
 // cube texture test
 public class Test_7_DynamicReflections extends Base
@@ -18,6 +19,7 @@ public class Test_7_DynamicReflections extends Base
     public MovementRig rig;
 
     public CubeRenderTarget cubeRenderTarget;
+    public CubeCamera cubeCamera;
 
     public void initialize()
     {
@@ -25,6 +27,7 @@ public class Test_7_DynamicReflections extends Base
         renderer.setClearColor( new Vector(0.5, 0.5, 0.5, 1) );
         scene    = new Scene();
         camera   = new Camera();
+        cubeCamera = new CubeCamera();
         camera.setPerspective(60, 4/3f, 0.01, 1000);
 
         rig = new MovementRig();
@@ -73,6 +76,10 @@ public class Test_7_DynamicReflections extends Base
     public void update()
     {
         rig.update(input, deltaTime);
+       
+        renderer.cubeRenderTarget = cubeRenderTarget;
+        renderer.render(scene, cubeCamera);
+        renderer.renderTarget = null;
         renderer.render(scene, camera);
 
         mesh.rotateX( 0.011, false );
