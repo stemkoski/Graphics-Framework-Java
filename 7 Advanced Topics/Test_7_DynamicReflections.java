@@ -26,7 +26,7 @@ public class Test_7_DynamicReflections extends Base
         renderer.setClearColor( new Vector(0.5, 0.5, 0.5, 1) );
         scene    = new Scene();
         camera   = new Camera();
-        cubeCamera = new CubeCamera();
+        //cubeCamera = new CubeCamera();
         camera.setPerspective(60, 4/3f, 0.01, 1000);
 
         rig = new MovementRig();
@@ -41,7 +41,7 @@ public class Test_7_DynamicReflections extends Base
             "images/dawn/ypos.png", "images/dawn/yneg.png", 
             "images/dawn/zpos.png", "images/dawn/zneg.png"
         };
-        CubeTexture skyTex = new CubeTexture(fileNames2);
+        CubeTexture2 skyTex = new CubeTexture2(500,500);
 
         Mesh sky = new Mesh(
             new BoxGeometry(500,500,500),
@@ -49,10 +49,10 @@ public class Test_7_DynamicReflections extends Base
         );
         scene.add(sky);
 
-        cubeRenderTarget = new CubeRenderTarget( new Vector(800, 600) );
+        //cubeRenderTarget = new CubeRenderTarget( new Vector(800, 600) );
 
         // torus to reflect
-        ReflectMaterial reflectMat = new ReflectMaterial( cubeRenderTarget.textures, 0.2f );
+        ReflectMaterial reflectMat = new ReflectMaterial( skyTex, 0.2f );
         reflectMat.uniforms.get("baseColor").data = new Vector(0,0,1);
         mesh = new Mesh(
             new TorusGeometry(),
@@ -76,9 +76,9 @@ public class Test_7_DynamicReflections extends Base
     {
         rig.update(input, deltaTime);
        
-        renderer.cubeRenderTarget = cubeRenderTarget;
-        renderer.render(scene, cubeCamera);
-        renderer.renderTarget = null;
+        //renderer.cubeRenderTarget = cubeRenderTarget;
+        //renderer.render(scene, cubeCamera);
+        //renderer.renderTarget = null;
         renderer.render(scene, camera);
 
         mesh.rotateX( 0.011, false );

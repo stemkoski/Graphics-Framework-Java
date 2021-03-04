@@ -7,7 +7,7 @@ class as well? (You may notice that in the examples,
 	it's not really "true" reflection/refraction, but a CubeCamera would fix this.) */
 
 
-package graphics.extras;
+package graphics.core;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +36,8 @@ public class CubeCamera extends Object3D
 
 		for(int i = 0; i < 6; i++){
 
-			Camera c = new Camera().setOrthographic(0,800, 0,600, 1,-1);
+			Camera c = new Camera();
+			c.setOrthographic(0,800, 0,600, 1,-1);
 			c.lookAt(cams.get(i));
 
 			

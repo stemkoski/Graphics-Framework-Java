@@ -21,7 +21,7 @@ public class CubeTexture2
 	// public ByteBuffer pixelData;
 
 	// load texture from file
-	public CubeTexture2(String[] fileNames)
+	public CubeTexture2(String fileNames)
 	{
 		magFilter = GL_LINEAR;
 		minFilter = GL_LINEAR;
@@ -49,6 +49,11 @@ public class CubeTexture2
 
 		uploadData();
 	}
+
+	public CubeTexture2(int width, int height)
+	{
+		this(width, height, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+	}
 	
 
 	// upload pixel data to GPU
@@ -62,10 +67,11 @@ public class CubeTexture2
 		// send pixel data (ByteBuffer) to texture buffer
 		for(int i = 0; i < 6; i++)
 		{
+			ByteBuffer emptyArray = BufferUtils.createByteBuffer(10);
 			IntBuffer widthBuf  = BufferUtils.createIntBuffer(1);
 	        IntBuffer heightBuf = BufferUtils.createIntBuffer(1);
 	        IntBuffer compBuf   = BufferUtils.createIntBuffer(1);
-		    ByteBuffer pixelData = stbi_load(fileNames[i], widthBuf, heightBuf, compBuf, 4);
+		    ByteBuffer pixelData = stbi_load(emptyArray, widthBuf, heightBuf, compBuf, 4);
 		    width = widthBuf.get();
 			height = heightBuf.get();
 			if (pixelData != null)
