@@ -13,83 +13,88 @@ public class OBJGeometry extends Geometry
 {
 	public OBJGeometry(String fileName)
 	{
-		super();
 
-		List<String> pts  				 = new ArrayList<String>();
-		List<String> uvs    	 		 = new ArrayList<String>();
-		List<String> norms    			 = new ArrayList<String>();
+		List<Vector> points             = new ArrayList<Vector>();
+		List<Vector> uvs                = new ArrayList<Vector>(); 		          
+		List<Vector> normals            = new ArrayList<Vector>();
 
-		List<Vector> vertexPositionList  = new ArrayList<Vector>();
-		List<Vector> vertexUVList    	 = new ArrayList<Vector>();
-		List<Vector> vertexNormalList    = new ArrayList<Vector>();
+    List<Vector> vertexPositionList   = new ArrayList<Vector>();
+		List<Vector> vertexUVList    	    = new ArrayList<Vector>();
+		List<Vector> vertexNormalList     = new ArrayList<Vector>();
 
-		List<String> dataArray  		 = new ArrayList<String>();
+		List<String> dataArray  		      = new ArrayList<String>();
 
 		File file = new File(fileName);
+    Scanner scan = null;
 
-        Scanner sc = new Scanner(file);
+    try
+    {
+      scan = new Scanner(file); 
+    }
+    catch (Exception ex)
+    {
+      ex.printStackTrace();
+    }
 
-        while (sc.hasNextLine()) {
-           dataArray.add(sc.nextLine());
-        }
-        sc.close();
+    while (scan.hasNextLine()) 
+    {
+      dataArray.add(scan.nextLine());
+    }
+    scan.close();
 
-        for (String line : dataArray)
+    for (String line : dataArray)
+    {
+      if (!line.startsWith("v") || !line.startsWith("vt") ||
+        	!line.startsWith("vn") || !line.startsWith("f") )
+      continue;
+      else
+      {
+        String[] d = line.split(" ");
+
+       	if (d[0] == "v")
+
+          points.add(  new Vector( Float.parseFloat(d[1]), 
+                                   Float.parseFloat(d[2]),
+                                   Float.parseFloat(d[3]) ) ); 
+        
+        if (d[0] == "vt")
+
+          uvs.add(     new Vector( Float.parseFloat(d[1]), 
+                                   Float.parseFloat(d[2]) ) ); 
+
+       	if (d[0] == "vn")
+
+          normals.add( new Vector( Float.parseFloat(d[1]), 
+                                   Float.parseFloat(d[2]),
+                                   Float.parseFloat(d[3]) ) ); 
+
+        if (d[0] == "f") 
         {
-        	if (!line.startsWith("v") || !line.startsWith("vt") ||
-        	 	!line.startsWith("vn") || !line.startsWith("f") )
-        		continue;
-        	else
-        	{
-        		String[] d = line.split(" ");
+          for (int i = 1; i < 4; i++)
+          {
+            String triangles = d[i];
+            String[] indices = triangles.split("/");
 
-        		if (d[0] == "v"){
-                	  pts.add(d[1]);
-                      pts.add(d[2]);
-                      pts.add(d[3]);
-                    }
-            	if (d[0] == "vt"){
-                	  uvs.add(d[1]);
-                      uvs.add(d[2]);
-                    }
-            	if (d[0] == "vn"){
-                      norms.add(d[1]);
-                      norms.add(d[2]);
-                      norms.add(d[3]);
-                    }
-            	if (d[0] == "f") 
-            	{
-            		for (int i = 1; i < 4; i++)
-            		{
-            			String triangles = d[i];
-            			String[] faces = triangles.split("/");
+            Vector P1 =  points.get( Integer.parseInt(indices[0]) - 1);
+            Vector P2 =     uvs.get( Integer.parseInt(indices[1]) - 1);
+            Vector P3 = normals.get( Integer.parseInt(indices[2]) - 1);
 
-            			pts 	= vertexPositionList.get(Integer.parseInt(faces[0])-1);
-            			uvs 	= 		vertexUVList.get(Integer.parseInt(faces[1])-1);
-            			norms 	=   vertexNormalList.get(Integer.parseInt(faces[2])-1);
-
-            			vertexPositionList.add( new Vector(   Double.parseDouble(pts.get(0)),   
-                                                              Double.parseDouble(pts.get(1)),   
-                                                              Double.parseDouble(pts.get(2)) ) );
-
-                    		  vertexUVList.add( new Vector(   Double.parseDouble(uvs.get(0)),   
-                                                              Double.parseDouble(uvs.get(1)) ) );
-
-                    	  vertexNormalList.add( new Vector(   Double.parseDouble(norms.get(0)), 
-                                                              Double.parseDouble(norms.get(1)), 
-                                                              Double.parseDouble(norms.get(2)) ) );
-                    }
-            	}
-        	}
+      			vertexPositionList.add( new Vector(  P1.values[0], P1.values[1], P1.values[2] ) );
+            vertexUVList.add(       new Vector(  P2.values[0], P2.values[1]               ) );
+            vertexNormalList.add(   new Vector(  P3.values[0], P3.values[1], P3.values[2] ) );
+          }
         }
+      }
+    }
 
-        float[] vertexPositionData 		 = Vector.flattenList(vertexPositionList);
-		float[] vertexUVData 			 = Vector.flattenList(vertexUVList);
-		float[] vertexNormalData 		 = Vector.flattenList(vertexNormalList);
+    float[] vertexPositionData 		 = Vector.flattenList(vertexPositionList);
+		float[] vertexUVData 			     = Vector.flattenList(vertexUVList);
+		float[] vertexNormalData 		   = Vector.flattenList(vertexNormalList);
 
 		addAttribute("vec3", "vertexPosition", vertexPositionData);
-        addAttribute("vec2", "vertexUV", vertexUVData);
-        addAttribute("vec3", "vertexNormal", vertexNormalData);
+    addAttribute("vec2", "vertexUV", vertexUVData);
+    addAttribute("vec3", "vertexNormal", vertexNormalData);
+
 		vertexCount = vertexPositionList.size();
 	}
 }
