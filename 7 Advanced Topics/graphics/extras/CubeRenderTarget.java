@@ -10,24 +10,27 @@ public class CubeRenderTarget
 	public int width;
 	public int height;
 
-	public CubeTexture texture;
+	public Texture[] textures;
 
 	public int framebufferRef;
 
-	public RenderTarget(Vector resolution, int magFilter, int minFilter, int wrap)
+	public CubeRenderTarget(Vector resolution, int magFilter, int minFilter, int wrap)
 	{
 		width = (int)resolution.values[0];
 		height = (int)resolution.values[1];
 
 		// generate an empty texture // here is where the changes are going to be
-		texture = new Texture(width, height, magFilter, minFilter, wrap);
+
+		for (int i = 0; i < 6; i++){
+
+		textures[i] = new Texture(width, height, magFilter, minFilter, wrap);
 
 		// create a framebuffer
 		framebufferRef = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferRef);
 
 		// configure color buffer to use this texture
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture.textureRef, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, textures[i].textureRef, 0);
 
 		
 		// generate a buffer to store depth information
@@ -41,9 +44,10 @@ public class CubeRenderTarget
 		int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (status != GL_FRAMEBUFFER_COMPLETE)
 			System.out.println("Framebuffer status error: " + status);
+		}
 	}
 
-	public RenderTarget(Vector resolution)
+	public CubeRenderTarget(Vector resolution)
 	{
 		this(resolution, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
 	}
