@@ -10,8 +10,7 @@ public class CubeRenderTarget
 	public int width;
 	public int height;
 
-	public CubeTexture textures;
-	public Texture[] t;
+	public Texture[] texture;
 
 	public int framebufferRef;
 
@@ -24,14 +23,14 @@ public class CubeRenderTarget
 
 		for (int i = 0; i < 6; i++){
 
-		t[i] = new Texture(width, height, magFilter, minFilter, wrap);
+		texture[i] = new Texture(width, height, magFilter, minFilter, wrap);
 
 		// create a framebuffer
 		framebufferRef = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferRef);
 
 		// configure color buffer to use this texture
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, t[i].textureRef, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture[i].textureRef, 0);
 
 		
 		// generate a buffer to store depth information

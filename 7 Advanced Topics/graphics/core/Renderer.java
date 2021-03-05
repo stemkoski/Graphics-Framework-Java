@@ -12,6 +12,7 @@ public class Renderer
 	public boolean clearColorBuffer;
 	public boolean clearDepthBuffer;
 	public RenderTarget renderTarget;
+	public CubeRenderTarget cubeRenderTarget;
 
 	public boolean shadowsEnabled;
 	public Shadow shadowObject;
@@ -34,6 +35,7 @@ public class Renderer
 		clearColorBuffer = true;
 		clearDepthBuffer = true;
 		renderTarget = null; // default to window
+		cubeRenderTarget = null;
 
 		shadowsEnabled = false;
 		shadowObject = null;
@@ -135,6 +137,19 @@ public class Renderer
 			// set render target properties
 			glBindFramebuffer(GL_FRAMEBUFFER, renderTarget.framebufferRef);
 			glViewport(0,0, renderTarget.width, renderTarget.height);
+		}
+
+		if (cubeRenderTarget == null)
+		{
+			// set render target to window
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glViewport(0,0, Base.windowWidth, Base.windowHeight); // TODO: set correctly...
+		}
+		else
+		{
+			// set render target properties
+			glBindFramebuffer(GL_FRAMEBUFFER, cubeRenderTarget.framebufferRef);
+			glViewport(0,0, cubeRenderTarget.width, cubeRenderTarget.height);
 		}
 
 		// clear color and/or depth buffers

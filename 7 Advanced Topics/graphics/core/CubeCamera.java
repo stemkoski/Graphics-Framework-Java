@@ -19,29 +19,27 @@ import graphics.geometry.*;
 import graphics.material.*;
 import graphics.extras.*;
 
-public class CubeCamera extends Object3D
+public class CubeCamera extends Camera
 {
 
 	public CubeCamera()
 	{
 
-	ArrayList<Vector> cams = new ArrayList<>(Arrays.asList( new Vector( 1, 0, 0),
-															new Vector(-1, 0, 0),
-															new Vector( 0, 1, 0),
-															new Vector( 0,-1, 0),
-															new Vector( 0, 0, 1),
-															new Vector( 0, 0,-1)));
+		ArrayList<Vector> cams = new ArrayList<>(Arrays.asList( new Vector( 1, 0, 0),
+																new Vector(-1, 0, 0),
+																new Vector( 0, 1, 0),
+																new Vector( 0,-1, 0),
+																new Vector( 0, 0, 1),
+																new Vector( 0, 0,-1) ) );
 							
 		
 
-		for(int i = 0; i < 6; i++){
+		for(int i = 0; i < 6; i++) {
 
 			Camera c = new Camera();
 			c.setOrthographic(0,800, 0,600, 1,-1);
 			c.lookAt(cams.get(i));
 
-			
 		}
-
 	}
 }
