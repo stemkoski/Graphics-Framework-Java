@@ -44,31 +44,27 @@ public class OBJGeometry extends Geometry
 
     for (String line : dataArray)
     {
-      if (!line.startsWith("v") || !line.startsWith("vt") ||
-        	!line.startsWith("vn") || !line.startsWith("f") )
-      continue;
-      else
-      {
+      
         String[] d = line.split(" ");
 
-       	if (d[0] == "v")
+       	if (d[0].equals("v"))
 
           points.add(  new Vector( Float.parseFloat(d[1]), 
                                    Float.parseFloat(d[2]),
                                    Float.parseFloat(d[3]) ) ); 
         
-        if (d[0] == "vt")
+        if (d[0].equals("vt"))
 
           uvs.add(     new Vector( Float.parseFloat(d[1]), 
                                    Float.parseFloat(d[2]) ) ); 
 
-       	if (d[0] == "vn")
+       	if (d[0].equals("vn"))
 
           normals.add( new Vector( Float.parseFloat(d[1]), 
                                    Float.parseFloat(d[2]),
                                    Float.parseFloat(d[3]) ) ); 
 
-        if (d[0] == "f") 
+        if (d[0].equals("f"))
         {
           for (int i = 1; i < 4; i++)
           {
@@ -85,7 +81,7 @@ public class OBJGeometry extends Geometry
           }
         }
       }
-    }
+    
 
     float[] vertexPositionData 		 = Vector.flattenList(vertexPositionList);
 		float[] vertexUVData 			     = Vector.flattenList(vertexUVList);
