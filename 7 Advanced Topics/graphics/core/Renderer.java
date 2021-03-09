@@ -3,6 +3,8 @@ package graphics.core;
 import static org.lwjgl.opengl.GL40.*;
 import java.util.List;
 import java.util.ArrayList;
+
+import graphics.core.*;
 import graphics.math.Vector;
 import graphics.light.*;
 
@@ -12,7 +14,6 @@ public class Renderer
 	public boolean clearColorBuffer;
 	public boolean clearDepthBuffer;
 	public RenderTarget renderTarget;
-	public CubeRenderTarget cubeRenderTarget;
 
 	public boolean shadowsEnabled;
 	public Shadow shadowObject;
@@ -35,7 +36,6 @@ public class Renderer
 		clearColorBuffer = true;
 		clearDepthBuffer = true;
 		renderTarget = null; // default to window
-		cubeRenderTarget = null;
 
 		shadowsEnabled = false;
 		shadowObject = null;
@@ -45,8 +45,8 @@ public class Renderer
 	{
 		this.clearColor = clearColor;
 
-		glClearColor((float)clearColor.values[0], (float)clearColor.values[1], 
-				     (float)clearColor.values[2], (float)clearColor.values[3]);
+		glClearColor((float)clearColor.values[0], (float)clearColor.values[1],
+				(float)clearColor.values[2], (float)clearColor.values[3]);
 	}
 
 	public void enableShadows(DirectionalLight shadowLight, float strength, Vector resolution, float bias)
@@ -60,11 +60,89 @@ public class Renderer
 		enableShadows(shadowLight, 0.5f, new Vector(512,512), 0.01f);
 	}
 
+	public void renderCube(Scene scene, CubeCamera cubeCamera, CubeRenderTarget crt) {
+		// extract list of all Mesh objects in scene
+		List<Object3D> descendentList = scene.getDescendentList();
+
+		// extract list of all Mesh objects in scene
+		ArrayList<Mesh> meshList = new ArrayList<Mesh>();
+		for (Object3D obj : descendentList) {
+			if (obj instanceof Mesh)
+				meshList.add((Mesh) obj);
+		}
+
+		// set render target properties
+		glBindFramebuffer(GL_FRAMEBUFFER, crt.framebufferRef);
+		glViewport(0, 0, crt.width, crt.height);
+
+		// clear color and/or depth buffers
+		if (clearColorBuffer)
+			glClear(GL_COLOR_BUFFER_BIT);
+		if (clearDepthBuffer)
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+		// extract list of all Light objects in scene
+		ArrayList<Light> lightList = new ArrayList<Light>();
+		for (Object3D obj : descendentList)
+			if (obj instanceof Light)
+				lightList.add((Light) obj);
+		// scenes support 4 lights; precisely 4 must be present
+		while (lightList.size() < 4)
+			lightList.add(new Light());
+
+		// for loop(?) to turn the camera's view
+
+		// update camera view (calculate inverse)
+		cubeCamera.updateViewMatrix();
+
+
+		for (Mesh mesh : meshList) {
+			// if this object is not visible,
+			//   continue to next object in list
+			if (!mesh.visible)
+				continue;
+
+			glUseProgram(mesh.material.programRef);
+
+			// bind VAO
+			glBindVertexArray(mesh.vaoRef);
+
+			// update uniform values stored outside of material
+			mesh.material.uniforms.get("modelMatrix").data = mesh.getWorldMatrix();
+			mesh.material.uniforms.get("viewMatrix").data = cubeCamera.viewMatrix;
+			mesh.material.uniforms.get("projectionMatrix").data = cubeCamera.projectionMatrix;
+
+			// if material uses light data, add lights from list
+			if (mesh.material.uniforms.containsKey("light0")) {
+				for (int lightNumber = 0; lightNumber < 4; lightNumber++) {
+					String lightName = "light" + lightNumber;
+					Light lightObject = lightList.get(lightNumber);
+					mesh.material.uniforms.get(lightName).data = lightObject;
+				}
+			}
+			// add camera position if needed (specular lighting & reflections)
+			if (mesh.material.uniforms.containsKey("viewPosition"))
+				mesh.material.uniforms.get("viewPosition").data = cubeCamera.getWorldPosition();
+
+			// update uniforms stored in material
+			for (Uniform uniform : mesh.material.uniforms.values())
+				uniform.uploadData();
+
+			// update render settings
+			for (RenderSetting setting : mesh.material.renderSettings.values())
+				setting.apply();
+
+			glDrawArrays(mesh.material.drawStyle, 0, mesh.geometry.vertexCount);
+
+
+		}
+	}
+
 	public void render(Scene scene, Camera camera)
 	{
 		// extract list of all Mesh objects in scene
 		List<Object3D> descendentList = scene.getDescendentList();
-		
+
 		// extract list of all Mesh objects in scene
 		ArrayList<Mesh> meshList = new ArrayList<Mesh>();
 		for (Object3D obj : descendentList)
@@ -87,31 +165,31 @@ public class Renderer
 			glClear(GL_DEPTH_BUFFER_BIT);
 
 			// reset original clear color
-			glClearColor((float)clearColor.values[0], (float)clearColor.values[1], 
-					     (float)clearColor.values[2], (float)clearColor.values[3]);
+			glClearColor((float)clearColor.values[0], (float)clearColor.values[1],
+					(float)clearColor.values[2], (float)clearColor.values[3]);
 
 			// everything in the scene gets rendered with depthMaterial
 			//   so only need to call glUseProgram & set matrices once
 			glUseProgram( shadowObject.material.programRef );
-			
+
 			shadowObject.updateInternal();
-			
+
 			for (Mesh mesh : meshList)
 			{
 				// skip invisible meshes
 				if (!mesh.visible)
 					continue;
-				
+
 				// only triangle-based meshes cast shadows
 				if (mesh.material.drawStyle != GL_TRIANGLES)
 					continue;
 
 				// bind VAO
 				glBindVertexArray( mesh.vaoRef );
-				
+
 				// update transform data
 				shadowObject.material.uniforms.get("modelMatrix").data = mesh.getWorldMatrix();
-				
+
 				// update uniforms (matrix data) stored in shadow material
 				for (Uniform uniform : shadowObject.material.uniforms.values())
 					uniform.uploadData();
@@ -137,19 +215,6 @@ public class Renderer
 			// set render target properties
 			glBindFramebuffer(GL_FRAMEBUFFER, renderTarget.framebufferRef);
 			glViewport(0,0, renderTarget.width, renderTarget.height);
-		}
-
-		if (cubeRenderTarget == null)
-		{
-			// set render target to window
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			glViewport(0,0, Base.windowWidth, Base.windowHeight); // TODO: set correctly...
-		}
-		else
-		{
-			// set render target properties
-			glBindFramebuffer(GL_FRAMEBUFFER, cubeRenderTarget.framebufferRef);
-			glViewport(0,0, cubeRenderTarget.width, cubeRenderTarget.height);
 		}
 
 		// clear color and/or depth buffers
@@ -181,7 +246,7 @@ public class Renderer
 
 			// bind VAO
 			glBindVertexArray( mesh.vaoRef );
-			
+
 			// update uniform values stored outside of material
 			mesh.material.uniforms.get("modelMatrix").data = mesh.getWorldMatrix();
 			mesh.material.uniforms.get("viewMatrix").data = camera.viewMatrix;
@@ -200,7 +265,7 @@ public class Renderer
 			// add camera position if needed (specular lighting & reflections)
 			if ( mesh.material.uniforms.containsKey("viewPosition") )
 				mesh.material.uniforms.get("viewPosition").data = camera.getWorldPosition();
-			
+
 			// add shadow data if enabled and used by shader
 			if ( shadowsEnabled &&  mesh.material.uniforms.containsKey("shadow0") )
 				mesh.material.uniforms.get("shadow0").data = shadowObject;
@@ -210,9 +275,9 @@ public class Renderer
 				uniform.uploadData();
 
 			// update render settings
-			for (RenderSetting setting : mesh.material.renderSettings.values()) 
+			for (RenderSetting setting : mesh.material.renderSettings.values())
 				setting.apply();
-			
+
 			glDrawArrays( mesh.material.drawStyle, 0, mesh.geometry.vertexCount );
 		}
 	}

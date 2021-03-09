@@ -5,8 +5,6 @@ import graphics.math.*;
 import graphics.geometry.*;
 import graphics.material.*;
 import graphics.extras.*;
-import graphics.light.*;
-import graphics.font.*;
 
 // cube texture test
 public class Test_7_DynamicReflections extends Base
@@ -19,6 +17,7 @@ public class Test_7_DynamicReflections extends Base
 
     public CubeRenderTarget cubeRenderTarget;
     public CubeCamera cubeCamera;
+    public Camera testCam;
 
     public void initialize()
     {
@@ -33,30 +32,30 @@ public class Test_7_DynamicReflections extends Base
         rig.attach( camera );
         rig.setPosition( new Vector(0.5, 1, 4) );
         scene.add( rig );
-        
+
         // add skybox
 
         String[] fileNames2 = new String[] {
-            "images/dawn/xpos.png", "images/dawn/xneg.png", 
-            "images/dawn/ypos.png", "images/dawn/yneg.png", 
-            "images/dawn/zpos.png", "images/dawn/zneg.png"
+                "./images/dawn/xpos.png", "./images/dawn/xneg.png",
+                "./images/dawn/ypos.png", "./images/dawn/yneg.png",
+                "./images/dawn/zpos.png", "./images/dawn/zneg.png"
         };
         CubeTexture skyTex = new CubeTexture(fileNames2);
 
         Mesh sky = new Mesh(
-            new BoxGeometry(500,500,500),
-            new CubeMaterial(skyTex)
+                new BoxGeometry(500,500,500),
+                new CubeMaterial(skyTex)
         );
         scene.add(sky);
 
-        cubeRenderTarget = new CubeRenderTarget( new Vector(800, 600) );
+        cubeRenderTarget = new CubeRenderTarget( new Vector(1600, 1200) );
 
         // torus to reflect
         ReflectMaterial reflectMat = new ReflectMaterial( cubeRenderTarget.ct, 0.2f );
         reflectMat.uniforms.get("baseColor").data = new Vector(0,0,1);
         mesh = new Mesh(
-            new TorusGeometry(),
-            reflectMat
+                new SphereGeometry(),
+                reflectMat
         );
         mesh.rotateX(-3.14/2, true);
         scene.add(mesh);
@@ -79,15 +78,10 @@ public class Test_7_DynamicReflections extends Base
     public void update()
     {
         rig.update(input, deltaTime);
-       
-        renderer.cubeRenderTarget = cubeRenderTarget;
-        renderer.render(scene, cubeCamera);
-        renderer.renderTarget = null;
+
+        renderer.renderCube(scene, cubeCamera, cubeRenderTarget);
         renderer.render(scene, camera);
 
-        mesh.rotateX( 0.011, false );
-        mesh.rotateY( 0.017, false );
-        
         if (input.isKeyDown(GLFW_KEY_F))
             System.out.println( "FPS: " + Math.floor(1 / deltaTime) );
     }
@@ -95,8 +89,7 @@ public class Test_7_DynamicReflections extends Base
     // driver method
     public static void main(String[] args)
     {
-        new Test_7_DynamicReflections().run(1600, 1200);
+        new Test_7_DynamicReflections().run(1600,1200);
     }
 
 }
-

@@ -2,52 +2,64 @@ package graphics.core;
 
 import static org.lwjgl.opengl.GL40.*;
 import graphics.math.Vector;
-import graphics.core.CubeCamera;
 import graphics.core.*;
 import graphics.material.*;
 
 public class CubeRenderTarget
 {
-	// store associated texture dimensions
-	public int width;
-	public int height;
+    // store associated texture dimensions
+    public int width;
+    public int height;
 
-	public CubeTexture ct;
-	public CubeCamera camera;
-	public Texture texture;
-	public RenderTarget renderTarget;
+    public CubeTexture ct;
+    public CubeCamera camera;
+    public Texture texture;
+    public RenderTarget renderTarget;
 
-	public int framebufferRef;
-
-
-	public CubeRenderTarget(Vector resolution, int magFilter, int minFilter, int wrap)
-	{
-		width = (int)resolution.values[0];
-		height = (int)resolution.values[1];
-
-		camera = new CubeCamera();
-		ct = new CubeTexture(width, height, magFilter, minFilter, wrap);
+    public int framebufferRef;
 
 
- 		for (int i = 0; i < 6; i++) {
+    public CubeRenderTarget(Vector resolution, int magFilter, int minFilter, int wrap)
+    {
+        width = (int)resolution.values[0];
+        height = (int)resolution.values[1];
 
- 		texture = new Texture(width, height, magFilter, minFilter, wrap);
+        camera = new CubeCamera();
+        ct = new CubeTexture(width, height, magFilter, minFilter, wrap);
 
- 		renderTarget = new RenderTarget( new Vector(512,512) );
+        // create a framebuffer
+        framebufferRef = glGenFramebuffers();
+        glBindFramebuffer(GL_FRAMEBUFFER, framebufferRef);
 
- 		Material m = new TextureMaterial( renderTarget.texture );
- 			
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
-			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, texture.textureRef, 0);
+        // configure color buffer to use this texture
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, ct.textureRef, 0);
 
-			camera.turnCam(i);
-		}
-	
-	}
+        // generate a buffer to store depth information
+        int depthBufferRef = glGenRenderbuffers();
+        glBindRenderbuffer(GL_RENDERBUFFER, depthBufferRef);
 
-	public CubeRenderTarget(Vector resolution)
-	{
-		this(resolution, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
-	}
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferRef);
+
+        // check framebuffer status
+        int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE)
+            System.out.println("Framebuffer status error: " + status);
+
+
+        for (int i = 0; i < 6; i++) {
+
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, ct.textureRef, 0);
+
+            camera.turnCam(i);
+        }
+ 
+    }
+
+    public CubeRenderTarget(Vector resolution)
+    {
+        this(resolution, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
+    }
 
 }
