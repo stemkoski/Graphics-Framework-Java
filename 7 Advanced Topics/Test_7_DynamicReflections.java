@@ -19,7 +19,6 @@ public class Test_7_DynamicReflections extends Base
 
     public CubeRenderTarget cubeRenderTarget;
     public CubeCamera cubeCamera;
-    public Camera c;
 
     public void initialize()
     {
@@ -53,7 +52,7 @@ public class Test_7_DynamicReflections extends Base
         cubeRenderTarget = new CubeRenderTarget( new Vector(800, 600) );
 
         // torus to reflect
-        ReflectMaterial reflectMat = new ReflectMaterial( cubeRenderTarget.texture, 0.2f );
+        ReflectMaterial reflectMat = new ReflectMaterial( cubeRenderTarget.ct, 0.2f );
         reflectMat.uniforms.get("baseColor").data = new Vector(0,0,1);
         mesh = new Mesh(
             new TorusGeometry(),
@@ -83,8 +82,8 @@ public class Test_7_DynamicReflections extends Base
        
         renderer.cubeRenderTarget = cubeRenderTarget;
         renderer.render(scene, cubeCamera);
-        //renderer.renderTarget = null;
-        //renderer.render(scene, camera);
+        renderer.renderTarget = null;
+        renderer.render(scene, camera);
 
         mesh.rotateX( 0.011, false );
         mesh.rotateY( 0.017, false );

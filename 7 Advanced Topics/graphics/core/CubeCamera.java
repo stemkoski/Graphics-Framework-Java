@@ -21,25 +21,35 @@ import graphics.extras.*;
 
 public class CubeCamera extends Camera
 {
+	public Camera camera;
+
+	public Matrix viewMatrix;
+	public Matrix projectionMatrix;
+
+	public Vector[] faces = { new Vector( 1,  0,  0),
+							  new Vector(-1,  0,  0),
+							  new Vector( 0,  1,  0),
+							  new Vector( 0, -1,  0),
+							  new Vector( 0,  0,  1),
+							  new Vector( 0,  0, -1),
+							  };
 
 	public CubeCamera()
 	{
+		camera = new Camera();
+		camera.setPosition(new Vector(0, 0, 0));
+		viewMatrix = Matrix.makeIdentity();
+		projectionMatrix = Matrix.makePerspective(90, 1, 0.1, 1000);
+	}
 
-		ArrayList<Vector> cams = new ArrayList<>(Arrays.asList( new Vector( 1, 0, 0),
-																new Vector(-1, 0, 0),
-																new Vector( 0, 1, 0),
-																new Vector( 0,-1, 0),
-																new Vector( 0, 0, 1),
-																new Vector( 0, 0,-1) ) );
-							
-		
+	public void updateViewMatrix()
+	{
+		viewMatrix = getWorldMatrix().inverse();
+	}
 
-		for(int i = 0; i < 6; i++) {
+	public void turnCam(int index){
 
-			Camera c = new Camera();
-			c.setOrthographic(0,800, 0,600, 1,-1);
-			c.lookAt(cams.get(i));
+		camera.lookAt(faces[index]);
 
-		}
 	}
 }

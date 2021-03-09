@@ -2,7 +2,9 @@ package graphics.core;
 
 import static org.lwjgl.opengl.GL40.*;
 import graphics.math.Vector;
-
+import graphics.core.CubeCamera;
+import graphics.core.*;
+import graphics.material.*;
 
 public class CubeRenderTarget
 {
@@ -10,41 +12,37 @@ public class CubeRenderTarget
 	public int width;
 	public int height;
 
-	public Texture[] texture;
+	public CubeTexture ct;
+	public CubeCamera camera;
+	public Texture texture;
+	public RenderTarget renderTarget;
 
 	public int framebufferRef;
+
 
 	public CubeRenderTarget(Vector resolution, int magFilter, int minFilter, int wrap)
 	{
 		width = (int)resolution.values[0];
 		height = (int)resolution.values[1];
 
-		// generate an empty texture // here is where the changes are going to be
+		camera = new CubeCamera();
+		ct = new CubeTexture(width, height, magFilter, minFilter, wrap);
 
-		for (int i = 0; i < 6; i++){
 
-		texture[i] = new Texture(width, height, magFilter, minFilter, wrap);
+ 		for (int i = 0; i < 6; i++) {
 
-		// create a framebuffer
-		framebufferRef = glGenFramebuffers();
-		glBindFramebuffer(GL_FRAMEBUFFER, framebufferRef);
+ 		texture = new Texture(width, height, magFilter, minFilter, wrap);
 
-		// configure color buffer to use this texture
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture[i].textureRef, 0);
+ 		renderTarget = new RenderTarget( new Vector(512,512) );
 
-		
-		// generate a buffer to store depth information
-		int depthBufferRef = glGenRenderbuffers();
-		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferRef);
-		
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferRef);
+ 		Material m = new TextureMaterial( renderTarget.texture );
+ 			
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, texture.textureRef, 0);
 
-		// check framebuffer status
-		int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-		if (status != GL_FRAMEBUFFER_COMPLETE)
-			System.out.println("Framebuffer status error: " + status);
+			camera.turnCam(i);
 		}
+	
 	}
 
 	public CubeRenderTarget(Vector resolution)
