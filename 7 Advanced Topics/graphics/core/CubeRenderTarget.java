@@ -12,9 +12,6 @@ public class CubeRenderTarget
     public int height;
 
     public CubeTexture ct;
-    public CubeCamera camera;
-    public Texture texture;
-    public RenderTarget renderTarget;
 
     public int framebufferRef;
 
@@ -24,9 +21,8 @@ public class CubeRenderTarget
         width = (int)resolution.values[0];
         height = (int)resolution.values[1];
 
-        camera = new CubeCamera();
         ct = new CubeTexture(width, height, magFilter, minFilter, wrap);
-
+        
         // create a framebuffer
         framebufferRef = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferRef);
@@ -41,25 +37,18 @@ public class CubeRenderTarget
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferRef);
 
+        glViewport(0, 0, width, height);
+
         // check framebuffer status
         int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (status != GL_FRAMEBUFFER_COMPLETE)
             System.out.println("Framebuffer status error: " + status);
-
-
-        for (int i = 0; i < 6; i++) {
-
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, ct.textureRef, 0);
-
-            camera.turnCam(i);
-        }
  
     }
 
     public CubeRenderTarget(Vector resolution)
     {
-        this(resolution, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
+        this(resolution, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
     }
 
 }

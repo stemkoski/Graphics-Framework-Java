@@ -60,7 +60,7 @@ public class Renderer
 		enableShadows(shadowLight, 0.5f, new Vector(512,512), 0.01f);
 	}
 
-	public void renderCube(Scene scene, CubeCamera cubeCamera, CubeRenderTarget crt) {
+	public void renderCube(Scene scene, Camera camera, CubeCamera cubeCamera, CubeRenderTarget crt) {
 		// extract list of all Mesh objects in scene
 		List<Object3D> descendentList = scene.getDescendentList();
 
@@ -72,8 +72,29 @@ public class Renderer
 		}
 
 		// set render target properties
-		glBindFramebuffer(GL_FRAMEBUFFER, crt.framebufferRef);
-		glViewport(0, 0, crt.width, crt.height);
+		for (int i = 0; i < 6; i++) {
+
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, crt.ct.textureRef, 0);
+
+            cubeCamera.turnCam(i);
+
+            render(scene, camera, null);
+        }
+
+		// activate render target
+		if (crt == null)
+		{
+			// set render target to window
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glViewport(0,0, Base.windowWidth, Base.windowHeight); // TODO: set correctly...
+		}
+		else
+		{
+			// set render target properties
+			glBindFramebuffer(GL_FRAMEBUFFER, crt.framebufferRef);
+			glViewport(0,0, crt.width, crt.height);
+		}
 
 		// clear color and/or depth buffers
 		if (clearColorBuffer)
@@ -81,21 +102,10 @@ public class Renderer
 		if (clearDepthBuffer)
 			glClear(GL_DEPTH_BUFFER_BIT);
 
-		// extract list of all Light objects in scene
-		ArrayList<Light> lightList = new ArrayList<Light>();
-		for (Object3D obj : descendentList)
-			if (obj instanceof Light)
-				lightList.add((Light) obj);
-		// scenes support 4 lights; precisely 4 must be present
-		while (lightList.size() < 4)
-			lightList.add(new Light());
-
-		// for loop(?) to turn the camera's view
+		camera.updateViewMatrix();
 
 		// update camera view (calculate inverse)
-		cubeCamera.updateViewMatrix();
-
-
+		
 		for (Mesh mesh : meshList) {
 			// if this object is not visible,
 			//   continue to next object in list
@@ -112,14 +122,7 @@ public class Renderer
 			mesh.material.uniforms.get("viewMatrix").data = cubeCamera.viewMatrix;
 			mesh.material.uniforms.get("projectionMatrix").data = cubeCamera.projectionMatrix;
 
-			// if material uses light data, add lights from list
-			if (mesh.material.uniforms.containsKey("light0")) {
-				for (int lightNumber = 0; lightNumber < 4; lightNumber++) {
-					String lightName = "light" + lightNumber;
-					Light lightObject = lightList.get(lightNumber);
-					mesh.material.uniforms.get(lightName).data = lightObject;
-				}
-			}
+			
 			// add camera position if needed (specular lighting & reflections)
 			if (mesh.material.uniforms.containsKey("viewPosition"))
 				mesh.material.uniforms.get("viewPosition").data = cubeCamera.getWorldPosition();
@@ -138,7 +141,7 @@ public class Renderer
 		}
 	}
 
-	public void render(Scene scene, Camera camera)
+	public void render(Scene scene, Camera camera, RenderTarget renderTarget)
 	{
 		// extract list of all Mesh objects in scene
 		List<Object3D> descendentList = scene.getDescendentList();

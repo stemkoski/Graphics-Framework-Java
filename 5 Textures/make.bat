@@ -1,7 +1,7 @@
 @echo off
 
 REM change the following line to your JDK directory
-set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_241"
+set JAVA_HOME="C:\Program Files\Java\jdk-15.0.1"
 
 echo Compiling Java File: %1
 

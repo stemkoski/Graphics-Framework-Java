@@ -37,7 +37,7 @@ public class Renderer
 	}
 
 	
-	public void render(Scene scene, Camera camera)
+	public void render(Scene scene, Camera camera, RenderTarget renderTarget)
 	{
 		// activate render target
 		if (renderTarget == null)

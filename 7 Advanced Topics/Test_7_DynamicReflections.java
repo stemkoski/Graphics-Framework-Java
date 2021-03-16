@@ -13,21 +13,24 @@ public class Test_7_DynamicReflections extends Base
     public Scene scene;
     public Camera camera;
     public Mesh mesh;
+    public Mesh mesh2;
     public MovementRig rig;
 
     public CubeRenderTarget cubeRenderTarget;
     public CubeCamera cubeCamera;
-    public Camera testCam;
 
     public void initialize()
     {
         renderer = new Renderer();
         renderer.setClearColor( new Vector(0.5, 0.5, 0.5, 1) );
+
         scene    = new Scene();
         camera   = new Camera();
         cubeCamera = new CubeCamera();
-        camera.setPerspective(60, 4/3f, 0.01, 1000);
 
+        camera.setPerspective(60, 4/3f, 0.01, 1000);
+        cubeCamera.setPerspective(90, 1f, 0.01, 1000);
+      
         rig = new MovementRig();
         rig.attach( camera );
         rig.setPosition( new Vector(0.5, 1, 4) );
@@ -46,18 +49,28 @@ public class Test_7_DynamicReflections extends Base
                 new BoxGeometry(500,500,500),
                 new CubeMaterial(skyTex)
         );
+
+        Mesh sonic = new Mesh(
+            new OBJGeometry("models/sonic/sonic.obj"),
+            new TextureMaterial( new Texture("models/sonic/sonic.png"))
+        );
+        scene.add(sonic);
+
+        sonic.setPosition(new Vector(2, 0, 5));
+
         scene.add(sky);
 
-        cubeRenderTarget = new CubeRenderTarget( new Vector(1600, 1200) );
+        cubeRenderTarget = new CubeRenderTarget( new Vector(512, 512) );
 
-        // torus to reflect
+        //torus to reflect
         ReflectMaterial reflectMat = new ReflectMaterial( cubeRenderTarget.ct, 0.2f );
         reflectMat.uniforms.get("baseColor").data = new Vector(0,0,1);
         mesh = new Mesh(
-                new SphereGeometry(),
+                new BoxGeometry(),
                 reflectMat
         );
         mesh.rotateX(-3.14/2, true);
+        mesh.setPosition(new Vector(0, 0, -2));
         scene.add(mesh);
 
         // helpers
@@ -70,26 +83,24 @@ public class Test_7_DynamicReflections extends Base
         axes.translate(0, 0.01, 0, true);
         scene.add( axes );
 
-        cubeCamera = new CubeCamera();
-        cubeCamera.setPosition(new Vector(0, 0, 0));
-
     }
 
     public void update()
     {
         rig.update(input, deltaTime);
 
-        renderer.renderCube(scene, cubeCamera, cubeRenderTarget);
-        renderer.render(scene, camera);
+        renderer.renderCube(scene, camera, cubeCamera, cubeRenderTarget);
+        renderer.render(scene, camera, null);
 
         if (input.isKeyDown(GLFW_KEY_F))
             System.out.println( "FPS: " + Math.floor(1 / deltaTime) );
+
     }
 
     // driver method
     public static void main(String[] args)
     {
-        new Test_7_DynamicReflections().run(1600,1200);
+        new Test_7_DynamicReflections().run(1200, 800);
     }
 
 }

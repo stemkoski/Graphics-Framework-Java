@@ -28,7 +28,6 @@ public class RenderTarget
 		// configure color buffer to use this texture
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture.textureRef, 0);
 
-		
 		// generate a buffer to store depth information
 		int depthBufferRef = glGenRenderbuffers();
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferRef);

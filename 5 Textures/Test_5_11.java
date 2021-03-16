@@ -75,10 +75,8 @@ public class Test_5_11 extends Base
         rig.update(input, deltaTime);
         sphere.rotateY( 0.01337, true );
 
-        renderer.renderTarget = renderTarget;
-        renderer.render(scene, skyCamera);
-        renderer.renderTarget = null;
-        renderer.render(scene, camera);
+        renderer.render(scene, skyCamera, renderTarget);
+        renderer.render(scene, camera, null);
     }
 
     // driver method
