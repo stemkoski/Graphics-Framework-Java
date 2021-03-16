@@ -10,3 +10,6 @@
 
 # Mac desktop files
 .DS_Store
+
+# ignore modified bat launch files(for james)
+*.bat
