@@ -13,7 +13,7 @@ public class Test_7_DynamicReflections extends Base
     public Scene scene;
     public Camera camera;
     public Mesh mesh;
-    public Mesh mesh2;
+    public Mesh sonic;
     public MovementRig rig;
 
     public CubeRenderTarget cubeRenderTarget;
@@ -50,13 +50,13 @@ public class Test_7_DynamicReflections extends Base
                 new CubeMaterial(skyTex)
         );
 
-        Mesh sonic = new Mesh(
+        sonic = new Mesh(
             new OBJGeometry("models/sonic/sonic.obj"),
             new TextureMaterial( new Texture("models/sonic/sonic.png"))
         );
         scene.add(sonic);
 
-        sonic.setPosition(new Vector(2, 0, 5));
+        sonic.setPosition(new Vector(0, 0, -1));
 
         scene.add(sky);
 
@@ -94,6 +94,10 @@ public class Test_7_DynamicReflections extends Base
 
         if (input.isKeyDown(GLFW_KEY_F))
             System.out.println( "FPS: " + Math.floor(1 / deltaTime) );
+        if (input.isKeyPressed(GLFW_KEY_N))
+            sonic.translate(-0.02, 0, 0, true);
+        if (input.isKeyPressed(GLFW_KEY_M))
+            sonic.translate(0.02, 0, 0, true);
 
     }
 
