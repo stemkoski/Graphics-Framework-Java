@@ -60,7 +60,7 @@ public class Renderer
 		enableShadows(shadowLight, 0.5f, new Vector(512,512), 0.01f);
 	}
 
-	public void renderCube(Scene scene, Camera camera, CubeCamera cubeCamera, CubeRenderTarget crt) {
+	public void renderCube(Scene scene, CubeCamera cubeCamera, CubeRenderTarget crt) {
 		// extract list of all Mesh objects in scene
 		List<Object3D> descendentList = scene.getDescendentList();
 
@@ -72,16 +72,7 @@ public class Renderer
 		}
 
 		// set render target properties
-		for (int i = 0; i < 6; i++) {
-
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, crt.ct.textureRef, 0);
-
-            cubeCamera.turnCam(i);
-
-            render(scene, camera, null);
-        }
-
+	
 		// activate render target
 		if (crt == null)
 		{
@@ -94,15 +85,31 @@ public class Renderer
 			// set render target properties
 			glBindFramebuffer(GL_FRAMEBUFFER, crt.framebufferRef);
 			glViewport(0,0, crt.width, crt.height);
+
+			clearColorBuffer = false;
+			clearDepthBuffer = false;
+
+			for (int i = 0; i < 6; i++) 
+			{
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, crt.ct.textureRef, 0);
+
+            cubeCamera.turnCam(i);
+
+            // trying to render to THIS side of the cube
+            // but it only renders 1 side 
+
+            //render(scene, cubeCamera, null);
+
+        	}
 		}
+		clearColorBuffer = true;
+		clearDepthBuffer = true;
 
-		// clear color and/or depth buffers
-		if (clearColorBuffer)
-			glClear(GL_COLOR_BUFFER_BIT);
-		if (clearDepthBuffer)
-			glClear(GL_DEPTH_BUFFER_BIT);
-
-		camera.updateViewMatrix();
+		cubeCamera.updateViewMatrix();
 
 		// update camera view (calculate inverse)
 		

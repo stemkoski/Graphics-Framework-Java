@@ -2,7 +2,7 @@ package graphics.core;
 
 import graphics.math.*;
 
-public class CubeCamera extends Object3D
+public class CubeCamera extends Camera
 {
     public Matrix viewMatrix;
     public Matrix projectionMatrix;
@@ -57,6 +57,7 @@ public class CubeCamera extends Object3D
     public void turnCam(int index)
     {
         this.lookAt(faces[index]);
+        updateViewMatrix();
     }
 
 }

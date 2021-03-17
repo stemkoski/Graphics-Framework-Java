@@ -66,11 +66,11 @@ public class Test_7_DynamicReflections extends Base
         ReflectMaterial reflectMat = new ReflectMaterial( cubeRenderTarget.ct, 0.2f );
         reflectMat.uniforms.get("baseColor").data = new Vector(0,0,1);
         mesh = new Mesh(
-                new BoxGeometry(),
+                new TorusGeometry(),
                 reflectMat
         );
         mesh.rotateX(-3.14/2, true);
-        mesh.setPosition(new Vector(0, 0, -2));
+        mesh.setPosition(new Vector(0, 0, 1));
         scene.add(mesh);
 
         // helpers
@@ -89,7 +89,7 @@ public class Test_7_DynamicReflections extends Base
     {
         rig.update(input, deltaTime);
 
-        renderer.renderCube(scene, camera, cubeCamera, cubeRenderTarget);
+        renderer.renderCube(scene, cubeCamera, cubeRenderTarget);
         renderer.render(scene, camera, null);
 
         if (input.isKeyDown(GLFW_KEY_F))
@@ -98,6 +98,8 @@ public class Test_7_DynamicReflections extends Base
             sonic.translate(-0.02, 0, 0, true);
         if (input.isKeyPressed(GLFW_KEY_M))
             sonic.translate(0.02, 0, 0, true);
+        if (input.isKeyPressed(GLFW_KEY_1))
+            cubeCamera.turnCam(1);
 
     }
 

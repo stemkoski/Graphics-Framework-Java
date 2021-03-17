@@ -73,10 +73,11 @@ public class CubeTexture
 			IntBuffer widthBuf  = BufferUtils.createIntBuffer(1);
 			IntBuffer heightBuf = BufferUtils.createIntBuffer(1);
 			IntBuffer compBuf   = BufferUtils.createIntBuffer(1);
-			if (this.fileNames != null){
+			if (this.fileNames != null)
+			{
 				pixelData = stbi_load(fileNames[i], widthBuf, heightBuf, compBuf, 4);
-			width = widthBuf.get();
-			height = heightBuf.get();
+				width = widthBuf.get();
+				height = heightBuf.get();
 			}
 			if (pixelData != null)
 				glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
@@ -84,7 +85,7 @@ public class CubeTexture
 						GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
 			else
 				glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
-						GL_RGBA, width,height, 0,
+						GL_RGBA, width, height, 0,
 						GL_RGBA, GL_UNSIGNED_BYTE, 0);
 		}
 

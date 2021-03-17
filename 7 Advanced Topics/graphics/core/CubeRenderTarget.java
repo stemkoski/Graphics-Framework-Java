@@ -34,15 +34,16 @@ public class CubeRenderTarget
         int depthBufferRef = glGenRenderbuffers();
         glBindRenderbuffer(GL_RENDERBUFFER, depthBufferRef);
 
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferRef);
-
-        glViewport(0, 0, width, height);
 
         // check framebuffer status
         int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (status != GL_FRAMEBUFFER_COMPLETE)
             System.out.println("Framebuffer status error: " + status);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindRenderbuffer(GL_RENDERBUFFER, 0);
  
     }
 
