@@ -98,8 +98,10 @@ public class Test_7_Water extends Base
         waterCamera.lookAt( water.getPosition() );
         rig.update(input, deltaTime);
         renderer.renderTarget = rt;
+        water.visible = false;
         renderer.render(scene, waterCamera);
         renderer.renderTarget = null;
+        water.visible = true;
         renderer.render(scene, camera);
     }
 
